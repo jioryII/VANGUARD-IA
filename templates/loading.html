@@ -1,0 +1,238 @@
+<!--
+██╗   ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ 
+██║   ██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗
+██║   ██║███████║██╔██╗ ██║██║  ███╗██║   ██║███████║██████╔╝██║  ██║
+╚██╗ ██╔╝██╔══██║██║╚██╗██║██║   ██║██║   ██║██╔══██║██╔══██╗██║  ██║
+╚████╔╝ ██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+ ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ 
+
+                             ██╗ █████╗ 
+                             ██║██╔══██╗
+                             ██║███████║
+                             ██║██╔══██║
+                             ██║██║  ██║
+                             ╚═╝╚═╝  ╚═╝
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación Logo Humo de Colores Final</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ffffff;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .loader-container {
+            width: 100vmin;
+            height: 100vmin;
+        }
+
+        .loader-container svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+  
+        .st0 { fill: #010101; }
+        .st1 { fill: #fefefe; }
+        .st0, .st1, .st2 { fill-rule: evenodd; }
+        .st2 { fill: #010101; } 
+
+
+
+        #animated-outer-border {
+            fill: none;
+            stroke: url(#glowing-gradient-border);
+            stroke-width: 70;
+            stroke-linecap: round;
+            stroke-dasharray: 600 12296;
+            animation: border-trace 6s linear infinite;
+            filter: url(#outer-glow-filter);
+        }
+
+        @keyframes border-trace {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -12896; }
+        }
+
+        .original-shape {
+             animation: element-color-subtle-shift 15s linear infinite alternate;
+        }
+        @keyframes element-color-subtle-shift {
+            0%, 100% { fill: #050505; } 
+            50% { fill: #151515; }
+        }
+   
+        .original-text-st0 {
+            fill: #010101;
+
+        }
+         .original-text-st1 {
+            fill: #fefefe; 
+        }
+
+
+
+        .shadow-layer {
+            fill: none; 
+            stroke: none;
+        }
+
+        .shadow-layer-purple {
+            filter: url(#smoky-shadow-purple-filter);
+        }
+        .shadow-layer-blue {
+            filter: url(#smoky-shadow-blue-filter);
+        }
+        .shadow-layer-pink {
+            filter: url(#smoky-shadow-pink-filter);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="loader-container">
+        <svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 3644 3644">
+            <defs>
+
+                <linearGradient id="glowing-gradient-border" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#f3392f; stop-opacity:0.1" />
+                    <stop offset="20%" style="stop-color:#00d33c; stop-opacity:0.8" />
+                    <stop offset="50%" style="stop-color:#e02cf4; stop-opacity:1" />
+                    <stop offset="80%" style="stop-color:#d3b000; stop-opacity:0.8" />
+                    <stop offset="100%" style="stop-color:#6a0dad; stop-opacity:0.1" />
+                </linearGradient>
+                <filter id="outer-glow-filter" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="30" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+
+                <filter id="smoky-shadow-purple-filter" x="-100%" y="-100%" width="300%" height="300%">
+                    <feFlood flood-color="#8A2BE2" flood-opacity="0" result="floodPurple">
+                        <animate attributeName="flood-opacity" values="0; 0.5; 0.3; 0.6; 0.2; 0.5; 0" dur="9s" repeatCount="indefinite" />
+                    </feFlood>
+                    <feComposite in="floodPurple" in2="SourceAlpha" operator="in" result="coloredShadowPurpleBase"/>
+                    <feGaussianBlur stdDeviation="40" result="blurredShadowPurple">
+                         <animate attributeName="stdDeviation" values="35; 50; 40; 55; 30; 45; 35" dur="11s" repeatCount="indefinite" />
+                    </feGaussianBlur>
+                    <feOffset dx="0" dy="0" in="blurredShadowPurple" result="offsetBlurredShadowPurple">
+                        <animate attributeName="dx" values="0; 15; -10; 5; -15; 10; 0" dur="13s" repeatCount="indefinite" />
+                        <animate attributeName="dy" values="0; -10; 15; -5; 10; -15; 0" dur="14s" repeatCount="indefinite" />
+                    </feOffset>
+                    <feMerge> <feMergeNode in="offsetBlurredShadowPurple"/> </feMerge>
+                </filter>
+
+                <filter id="smoky-shadow-blue-filter" x="-100%" y="-100%" width="300%" height="300%">
+                    <feFlood flood-color="#007FFF" flood-opacity="0" result="floodBlue">
+                         <animate attributeName="flood-opacity" values="0; 0.6; 0.2; 0.5; 0.3; 0.6; 0" dur="10s" repeatCount="indefinite" />
+                    </feFlood>
+                    <feComposite in="floodBlue" in2="SourceAlpha" operator="in" result="coloredShadowBlueBase"/>
+                    <feGaussianBlur stdDeviation="45" result="blurredShadowBlue">
+                        <animate attributeName="stdDeviation" values="40; 55; 35; 60; 40; 50; 40" dur="12s" repeatCount="indefinite" />
+                    </feGaussianBlur>
+                    <feOffset dx="0" dy="0" in="blurredShadowBlue" result="offsetBlurredShadowBlue">
+                        <animate attributeName="dx" values="0; -12; 8; -8; 12; -5; 0" dur="15s" repeatCount="indefinite" />
+                        <animate attributeName="dy" values="0; 8; -12; 8; -8; 12; 0" dur="13.5s" repeatCount="indefinite" />
+                    </feOffset>
+                    <feMerge> <feMergeNode in="offsetBlurredShadowBlue"/> </feMerge>
+                </filter>
+
+                <filter id="smoky-shadow-pink-filter" x="-100%" y="-100%" width="300%" height="300%">
+                    <feFlood flood-color="#FFB6C1" flood-opacity="0" result="floodPink">
+                        <animate attributeName="flood-opacity" values="0; 0.4; 0.2; 0.5; 0.1; 0.4; 0" dur="8s" repeatCount="indefinite" />
+                    </feFlood>
+                    <feComposite in="floodPink" in2="SourceAlpha" operator="in" result="coloredShadowPinkBase"/>
+                    <feGaussianBlur stdDeviation="50" result="blurredShadowPink">
+                        <animate attributeName="stdDeviation" values="45; 60; 38; 55; 42; 60; 45" dur="10.5s" repeatCount="indefinite" />
+                    </feGaussianBlur>
+                    <feOffset dx="0" dy="0" in="blurredShadowPink" result="offsetBlurredShadowPink">
+                        <animate attributeName="dx" values="0; 10; -15; 10; -8; 5; 0" dur="14.5s" repeatCount="indefinite" />
+                        <animate attributeName="dy" values="0; -15; 10; -10; 15; -5; 0" dur="12.5s" repeatCount="indefinite" />
+                    </feOffset>
+                    <feMerge> <feMergeNode in="offsetBlurredShadowPink"/> </feMerge>
+                </filter>
+            </defs>
+
+ 
+          <path id="outer-border-path-shape" class="st1" d="M224.4,92c1074.3-.2,2148.7,0,3223,.5,18.7,2.9,37,7.2,55,13,10.6,6.9,20.8,14.4,30.5,22.5,7.2,9,13.8,18.3,20,28,5.4,18.1,9.7,36.4,13,55,.7,1073.7.7,2147.3,0,3221-3.1,18.6-7.4,37-13,55-6.5,11-14,21.4-22.5,31-9.2,7.1-18.5,13.9-28,20.5-19,5.7-38.4,10.1-58,13-1072.7.7-2145.3.7-3218,0-17.9-2.9-35.6-6.9-53-12-11.8-7-22.9-14.8-33.5-23.5-7.4-9.7-14.4-19.7-21-30-4.6-16.9-8.6-33.9-12-51-.7-1075.7-.7-2151.3,0-3227,3.5-16.8,7.5-33.5,12-50,7-12,15.2-23.2,24.5-33.5,9.1-7.4,18.8-14.1,29-20,17.3-4.8,34.6-9,52-12.5Z"/>
+ 
+          <use id="animated-outer-border" xlink:href="#outer-border-path-shape" />
+
+          <g id="arc-top-group">
+              <use xlink:href="#arc-top-shape" class="shadow-layer shadow-layer-purple" />
+              <use xlink:href="#arc-top-shape" class="shadow-layer shadow-layer-blue" />
+              <use xlink:href="#arc-top-shape" class="shadow-layer shadow-layer-pink" />
+              <path id="arc-top-shape" class="st2 original-shape" d="M1743.5,239.5c155.8-4.7,305.5,23.1,449,83.5,12.9,5.9,25.9,11.6,39,17,16.5,7.5,30.3,18.4,41.5,32.5,10.3,16.5,9.6,32.5-2,48-10.3,9.5-22.5,13.7-36.5,12.5-9.6-1.7-18.9-4.4-28-8-67-31.2-136.7-54.9-209-71-181.2-37.6-358.8-25.2-533,37-34.2,14.3-68.6,28.3-103,42-16.9,6.1-32.9,4.4-48-5-17.7-17.2-19.5-36.1-5.5-56.5,12.7-14.1,27.9-25,45.5-32.5,123.8-57.6,253.8-90.8,390-99.5Z"/>
+          </g>
+
+
+          <g id="logo-v-main-group">
+
+              <use xlink:href="#v-part-left-shape" class="shadow-layer shadow-layer-purple" />
+              <use xlink:href="#v-part-left-shape" class="shadow-layer shadow-layer-blue" />
+              <use xlink:href="#v-part-left-shape" class="shadow-layer shadow-layer-pink" />
+
+              <use xlink:href="#v-part-right-shape" class="shadow-layer shadow-layer-purple" />
+              <use xlink:href="#v-part-right-shape" class="shadow-layer shadow-layer-blue" />
+              <use xlink:href="#v-part-right-shape" class="shadow-layer shadow-layer-pink" />
+
+                <path id="v-part-left-shape" class="st2" d="M703.5,450.5c104.3-.1,208.7.5,313,2,9.7,0,19.3-.4,29-1,11.2-.5,20.3,3.5,27.5,12,70,116.7,138,234.7,204,354,114.8,212.6,228.8,425.6,342,639l132,240c8.1,19.2,12.8,39.2,14,60,2.3,224,2,448-1,672,0,7.1-1.7,13.6-5.5,19.5-1.8.5-3.5.2-5-1-4.6-3.9-8.4-8.4-11.5-13.5-91.9-161.5-182.6-323.9-272-487-165.5-290.6-328.1-582.9-488-877-8.9-15.6-16.9-31.6-24-48-2.8-11.3,1.1-19.5,11.5-24.5,4.2-1.5,8.6-2.5,13-3,40.7-.9,81.3-.6,122,1,17.9,1.1,32.7,8.2,44.5,21.5,5.8,7.7,11.2,15.7,16,24,66.2,124.8,132.2,249.8,198,375,59,110.3,118,220.7,177,331,4,7.1,8.8,13.6,14.5,19.5,6,5.6,12.4,5.9,19,1,12.8-13.3,19.1-29.3,19-48-.2-12-2.7-23.5-7.5-34.5-127.4-242.9-256.4-484.9-387-726-7.5-15.8-17.6-29.6-30.5-41.5-10-6.6-21-10.6-33-12-75-1-150-2.3-225-4-17.1-2.1-31.2-9.6-42.5-22.5-21.7-36.7-43.1-73.7-64-111-49.3-92-99.7-183.3-151-274-6-9.8-10.2-20.3-12.5-31.5-.2-3.3,1.1-5.6,4-7,5.5-1.9,11.2-2.9,17-3,14.5-.2,28.8-.7,43-1.5Z"/>
+                <path id="v-part-right-shape" class="st2" d="M2708.5,450.5c59.7-.2,119.3,0,179,.5,16,.3,32,1,48,2,5.9-.2,9.3,2.6,10,8.5-1.8,7.6-4.3,14.9-7.5,22-63.6,114.2-126.9,228.5-190,343-8.1,13.1-15.7,26.4-23,40-11.2,20.3-28.3,31.8-51.5,34.5-75,1.7-150,3-225,4-11.6,1.6-22.3,5.6-32,12-10,9.1-18.1,19.6-24.5,31.5-132.5,243.9-263.1,488.9-392,735-12.1,25.6-11.1,50.6,3,75,4.4,6.4,10.4,10.4,18,12,7.1-2.8,12.8-7.4,17-14,119.1-219.3,236.5-439.6,352-661,11.6-20.8,22.9-41.8,34-63,11.3-21.8,29.2-34.2,53.5-37.5,40.6-2.6,81.3-3,122-1,10,0,18.5,3.5,25.5,10.5,3.2,7.7,2.9,15.4-1,23-78.6,146.6-158.3,292.6-239,438-159.9,282.4-318.2,565.7-475,850-22.7,39.3-45.3,78.7-68,118-3.2,3.8-6.3,7.7-9.5,11.5-4,3.8-7.2,3.3-9.5-1.5-1-2.9-1.7-5.9-2-9-3-227.7-3.3-455.3-1-683,1.2-19.5,5.9-38.2,14-56,115-208.7,228-418.7,339-630,45.1-83.8,90.4-167.5,136-251,65.3-118.3,132.7-235.3,202-351,5.5-6.9,12.7-10.7,21.5-11.5,58.8-.2,117.5-.7,176-1.5Z"/>
+              </g>
+          </g>
+
+
+          <g id="arc-right-group">
+              <use xlink:href="#arc-right-shape" class="shadow-layer shadow-layer-purple" />
+              <use xlink:href="#arc-right-shape" class="shadow-layer shadow-layer-blue" />
+              <use xlink:href="#arc-right-shape" class="shadow-layer shadow-layer-pink" />
+              <path id="arc-right-shape" class="st2 original-shape" d="M2779.5,1066.5c5.4-.7,10.4.5,15,3.5,11,11.8,18.5,25.7,22.5,41.5,14.7,57.8,24.1,116.4,28,176,13.9,267.8-55.8,511.2-209,730-134.1,185-309.6,314.5-526.5,388.5-10.8,3-21.8,4-33,3-13.8-4.4-17.6-13.2-11.5-26.5,11.9-22.2,27.7-41,47.5-56.5,14.5-10.4,29.5-20.1,45-29,209.5-99.1,369.3-250.6,479.5-454.5,106.1-202.4,142.4-416.7,109-643-3-28.9-1.6-57.6,4-86,3.3-16.2,10.5-30.3,21.5-42.5,2.6-1.8,5.3-3.3,8-4.5Z"/>
+          </g>
+
+
+          <g id="arc-left-group">
+              <use xlink:href="#arc-left-shape" class="shadow-layer shadow-layer-purple" />
+              <use xlink:href="#arc-left-shape" class="shadow-layer shadow-layer-blue" />
+              <use xlink:href="#arc-left-shape" class="shadow-layer shadow-layer-pink" />
+              <path id="arc-left-shape" class="st2 original-shape" d="M796.5,1071.5c9.6,1.1,17.1,5.8,22.5,14,10,19.4,15.7,40.1,17,62,1.3,12,1.7,24,1,36-41.2,297.5,27.8,565.8,207,805,103.7,135.8,232.9,239.6,387.5,311.5,24.1,13.8,46.3,30.3,66.5,49.5,6.8,7.4,12.8,15.4,18,24,2.8,5.7,4.6,11.7,5.5,18-1.2,7.6-5.6,12.5-13,14.5-15.4,1.2-30.4-.8-45-6-76.6-25.6-148.6-60.3-216-104-125.4-81.1-229.9-183.6-313.5-307.5-153.4-227.2-216-477.5-188-751,5.8-42.1,13.8-83.8,24-125,2.7-9.1,6.4-17.7,11-26,4.4-5.9,9.6-10.9,15.5-15Z"/>
+          </g>
+          
+
+          <g id="logo-text-elements-group-container">
+              <use xlink:href="#logo-text-elements-shape" class="shadow-layer shadow-layer-purple" />
+              <use xlink:href="#logo-text-elements-shape" class="shadow-layer shadow-layer-blue" />
+              <use xlink:href="#logo-text-elements-shape" class="shadow-layer shadow-layer-pink" />
+            <g id="logo-text-elements-shape"> 
+                <path class="st2 original-shape" d="M1836.5,2735.5h71c.2,66,1.1,132,2.5,198,5,13.7,14.8,21.5,29.5,23.5,34.6,5.7,68.9,4.3,103-4,10.8-4.1,17-12,18.5-23.5,1.8-64.7,3.3-129.3,4.5-194h71c1.4,66,1.3,132-.5,198-3.7,42.4-25.9,69.9-66.5,82.5-6.6,1.6-13.3,2.9-20,4-42.3,1.9-84.7,1.9-127,0-37.6-5.7-65.1-25.2-82.5-58.5-1.6-3.9-2.6-7.9-3-12-.5-71.3-.7-142.7-.5-214Z"/>
+                <path class="st2 original-shape" d="M356.5,2738.5c22.7-1.3,45.6-1.3,68.5,0,29.9,64.2,59.6,128.6,89,193,5,10,10,20,15,30,.7.9,1.5,1.5,2.5,2,36.1-74.3,70.6-149.3,103.5-225,24.4-1.3,48.9-1.3,73.5,0-45.7,94-91.3,188-137,282-3.3,1.4-6.8,2.1-10.5,2-20.5-1.3-41-1.3-61.5,0-4.3,0-8.5-.6-12.5-2-32.9-71.6-65.6-143.2-98-215-10.9-22.4-21.7-44.8-32.5-67Z"/>
+                <path class="st2 original-shape" d="M813.5,2738.5c31-.2,62,0,93,.5.8.3,1.5.8,2,1.5,46.2,94.1,91.9,188.4,137,283-22.7.2-45.3,0-68-.5-.9-.4-1.8-.9-2.5-1.5-31.6-62.2-62.9-124.5-94-187-6.6-12.9-13.4-25.5-20.5-38-1,.5-1.8,1.1-2.5,2-17.7,37.3-35.3,74.7-53,112-18.7,37.4-37.4,74.7-56,112-24.1,2.1-48.2,2.4-72.5,1,23.2-47.4,46.7-94.7,70.5-142,22.1-47.7,44.2-95.4,66.5-143Z"/>
+                <path class="st2 original-shape" d="M1095.5,2738.5c18-.2,36,0,54,.5,1.9.4,3.6,1.2,5,2.5,35,36.5,69.8,73.2,104.5,110,22,21.7,44.4,43,67,64,1.8-58.6,2.8-117.2,3-176,22,0,44.2,0,66.5,0,.2,95-.2,190-1,285-21.3.2-42.7,0-64-.5-1.8-.5-3.4-1.1-5-2-59.9-58.8-119.9-117.3-180-175.5-.8,6.3-1.3,12.6-1.5,19-.2,53-.7,106-1.5,159-21.6.3-43.1,0-64.5-1-.7-94.3-.7-188.7,0-283,5.9-.6,11.8-1.3,17.5-2Z"/>
+                <path class="st2 original-shape" d="M1534.5,2737.5c2.2.8,4.6,1.5,7,2,49-1.2,98-1.3,147-.5,27.2,1.9,49.4,13.4,66.5,34.5,4.9,5.4,8.4,11.5,10.5,18.5-.1,4.8-2.4,7.8-7,9-66.3,1.4-132.7,2.4-199,3-19.2,2.6-30.7,13.4-34.5,32.5-1.9,31.7-1.9,63.3,0,95,3.6,22.2,16.8,32.8,39.5,31.5,28.3.7,56.7.7,85,0,12.9.4,25.2-2,37-7,5.1-4.4,8.6-9.9,10.5-16.5,1.7-7.6,2.6-15.2,2.5-23-29-.8-58-1.2-87-1-.9-17-1.2-34-1-51,51-1.2,102-1.6,153-1,1.2,26.6,1.3,53.3.5,80-.7,10-1.7,20-3,30-.4,3.5-1.4,6.9-3,10-19.7,24.4-45.2,37.6-76.5,39.5-49.7.7-99.3.7-149,0-34-4-57.6-21.6-71-53-2.3-6.7-3.8-13.5-4.5-20.5-.7-46.7-.7-93.3,0-140-.3-9.1,2-17.4,7-25,18-23.3,41.2-38.9,69.5-47Z"/>
+                <path class="st2 original-shape" d="M2313.5,2738.5c31.6-.3,63.1,0,94.5,1,46.4,94.8,92.2,189.8,137.5,285-22.7.2-45.3,0-68-.5-.9-.4-1.8-.9-2.5-1.5-37.6-74.2-74.9-148.5-112-223-1.1-2.5-2.8-3.2-5-2-34.3,75.5-70.5,150.1-108.5,224-.5.7-1.2,1.2-2,1.5-23.6,1.5-47.3,1.9-71,1,47.4-94.3,93.1-189.5,137-285.5Z"/>
+                <path class="st2 original-shape" d="M2587.5,2738.5c68,.5,136,1,204,1.5,23.4,1.4,44.8,8.7,64,22,22.3,20.1,32.3,45.3,30,75.5-.2,11.5-1.7,22.9-4.5,34-6,11.7-14.5,21.2-25.5,28.5-9.1,6.6-18.8,12.1-29,16.5,18.8,35.8,37.8,71.5,57,107-24.3,1.2-48.7,1.3-73,.5-.8-.3-1.5-.8-2-1.5-17.6-35.3-35.8-70.3-54.5-105-.5-18-.7-36-.5-54,15.4.3,30.7-.2,46-1.5,15.6-5.6,22.1-16.8,19.5-33.5-2.4-14.1-10.6-22.6-24.5-25.5-46.7-2.2-93.4-1.8-140,1,.3,73.1-.2,146.3-1.5,219.5-21.8,1-43.6,1.3-65.5,1,1.1-95.3,1.1-190.7,0-286Z"/>
+                <path class="st2 original-shape" d="M2960.5,2738.5c77-.2,154,0,231,.5,1.3.7,2.7,1.3,4,2,21.2,21.9,43.1,43.1,65.5,63.5,1,53.4.7,106.8-1,160-22.2,19.5-44.3,39-66.5,58.5-77.3.9-154.7,1.3-232,1-1-95.1-1.3-190.3-1-285.5Z"/>
+                <path class="st1 original-text-st1" d="M3050.5,2803.5c36.3-.2,72.7,0,109,.5,20.9,1.2,33.4,12.1,37.5,32.5.7,32.7.7,65.3,0,98-5.4,15.4-16.3,24.3-32.5,26.5-47.6,2.1-95.3,2.9-143,2.5-.2-52.7,0-105.3.5-158,9.6-.6,19.1-1.3,28.5-2Z"/>
+                <path class="st2 original-shape" d="M1710.5,3200.5h38v196h-38v-196Z"/> 
+                <path class="st0 original-text-st0" d="M1844.5,3201.5c16-.3,32,0,48,1,23.3,64.3,46.3,128.6,69,193-11.3.2-22.7,0-34-.5l-1.5-1.5c-19.1-50.7-38.2-101.4-57.5-152-1.3.6-2.1,1.6-2.5,3-16.8,50.5-34.8,100.5-54,150-11.8,1-23.6,1.3-35.5,1,23.2-64.4,45.9-129.1,68-194Z"/>
+            </g>
+          </g>
+
+        </svg>
+    </div>
+
+</body>
+</html>

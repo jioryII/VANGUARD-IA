@@ -1,0 +1,439 @@
+<!--
+██╗   ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ 
+██║   ██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗
+██║   ██║███████║██╔██╗ ██║██║  ███╗██║   ██║███████║██████╔╝██║  ██║
+╚██╗ ██╔╝██╔══██║██║╚██╗██║██║   ██║██║   ██║██╔══██║██╔══██╗██║  ██║
+╚████╔╝ ██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+ ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ 
+
+                             ██╗ █████╗ 
+                             ██║██╔══██╗
+                             ██║███████║
+                             ██║██╔══██║
+                             ██║██║  ██║
+                             ╚═╝╚═╝  ╚═╝
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanguard IA - Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='logo2.png') }}" type="image/png">
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .home-main-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            flex-grow: 1; 
+            text-align: center;
+            padding: calc(var(--top-bar-height) + 40px) var(--main-padding) 40px; 
+            box-sizing: border-box;
+            overflow-x: hidden; 
+        }
+
+        .hero-container {
+            max-width: 1200px; 
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 40px; 
+        }
+
+        .vanguard-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700; 
+            font-size: clamp(3rem, 12vw, 8rem);
+            letter-spacing: 0.01em; 
+            text-transform: uppercase;
+            
+            color: var(--bg-color); 
+            -webkit-text-stroke-width: 1px; 
+            -webkit-text-stroke-color: var(--text-color); 
+            paint-order: stroke fill; 
+            
+            margin-top: 0;
+            margin-bottom: 0.2em;
+            line-height: 1.05; 
+            word-break: break-word; 
+            overflow-wrap: break-word; 
+        }
+        
+        .vanguard-title .ia-part {
+            text-shadow:
+                0 0 10px rgba(var(--new-rgb-accent-blue), 0.85), 
+                0 0 20px rgba(var(--new-rgb-accent-blue), 0.65),
+                0 0 12px rgba(var(--new-rgb-accent-purple), 0.8),
+                0 0 24px rgba(var(--new-rgb-accent-purple), 0.6),
+                0 0 14px rgba(var(--new-rgb-accent-red), 0.75),
+                0 0 28px rgba(var(--new-rgb-accent-red), 0.55);
+            position: relative; 
+        }
+
+        .hero-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: clamp(0.9rem, 2.5vw, 1.4rem); 
+            color: var(--text-secondary-color);
+            max-width: 650px; 
+            margin: 0.8em auto 1.8em auto;
+            line-height: 1.6;
+        }
+
+        .cta-buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; 
+            gap: 15px;
+            margin-top: 25px; 
+        }
+
+        .cta-home-button {
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px; 
+            border-radius: 25px; 
+            font-weight: 600;
+            text-decoration: none; 
+            transition: all 0.25s ease-out;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            min-width: 170px; 
+        }
+        .cta-home-button i {
+            margin-right: 8px;
+            font-size: 1.05em;
+        }
+        .cta-home-button .fa-arrow-right { margin-left: 8px; margin-right: 0; }
+
+
+        .cta-home-button.primary {
+            background: var(--new-gradient-button-natural);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(var(--new-rgb-accent-blue), 0.25);
+        }
+        .cta-home-button.primary:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 7px 20px rgba(var(--new-rgb-accent-blue), 0.3);
+        }
+
+        .cta-home-button.secondary {
+            background: var(--card-bg); 
+            color: var(--text-color);
+        }
+        .cta-home-button.secondary::before {
+            content: ""; position: absolute; inset: 0;
+            border-radius: inherit; 
+            padding: 2px; 
+            background: var(--new-gradient-main); 
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            z-index: -1; 
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .cta-home-button.secondary:hover {
+            transform: translateY(-2px);
+        }
+        .cta-home-button.secondary:hover::before {
+            opacity: 1;
+        }
+        
+        .features-section {
+            width: 100%;
+            max-width: 1200px;
+            margin: 50px auto 30px auto; 
+            padding: 0 var(--main-padding);
+            box-sizing: border-box;
+        }
+        .features-section h2 {
+            font-size: clamp(1.4rem, 4.5vw, 2rem); 
+            color: var(--text-color);
+            margin-bottom: 30px; 
+            text-align: center;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+            gap: 25px; 
+        }
+        .feature-card {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px; 
+        }
+        .feature-icon {
+            font-size: 2.2rem; 
+            margin-bottom: 15px;
+            background: var(--new-gradient-icon);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block; 
+        }
+        .feature-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary-color);
+            line-height: 1.55;
+            flex-grow: 1; 
+        }
+
+        @media (max-width: 768px) {
+            .vanguard-title {
+                font-size: clamp(2.4rem, 10vw, 6rem); 
+                letter-spacing: 0.005em;
+                line-height: 1.1; 
+            }
+            .hero-subtitle {
+                font-size: clamp(0.9rem, 3vw, 1.2rem);
+            }
+        }
+
+        @media (max-width: 480px) {
+             .vanguard-title {
+                font-size: clamp(2rem, 11vw, 4.5rem);
+                letter-spacing: 0em; 
+                line-height: 1.1;
+            }
+            .hero-subtitle {
+                 font-size: clamp(0.85rem, 3.5vw, 1.1rem);
+                 margin: 0.6em auto 1.5em auto;
+            }
+            .cta-buttons-container {
+                 gap: 10px;
+            }
+            .cta-home-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                min-width: auto; 
+                width: 100%; 
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr; 
+                gap: 20px;
+            }
+             .features-section h2 {
+                 font-size: clamp(1.3rem, 5vw, 1.8rem);
+             }
+        }
+    </style>
+</head>
+<body data-theme="light"> 
+    
+    <header class="top-bar">
+        <a href="{{ url_for('index_route') }}" class="logo-link"> 
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark">
+                <span>VANGUARD <span class="text-gradient">IA</span></span>
+            </div>
+        </a>
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-wrapper">
+            <nav class="mobile-nav">
+                <ul>
+                    <li><a href="{{ url_for('index_route') }}" class="active nav-link-mobile">Inicio</a></li>
+                    <li><a href="{{ url_for('analisis_page') }}" class="nav-link-mobile">Análisis</a></li>
+                    <li><a href="{{ url_for('zonas_vigiladas_page') }}" class="nav-link-mobile">Zonas Vigiladas</a></li>
+                    <li><a href="{{ url_for('incidentes_page') }}" class="nav-link-mobile">Incidentes</a></li>
+                    <li><a href="{{ url_for('alertas_main_page') }}" class="nav-link-mobile">Alertas</a></li>
+                    <li><a href="{{ url_for('personas_vehiculos_page') }}" class="nav-link-mobile">Personas y Vehículos</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-controls-wrapper">
+                <button id="profile-button-mobile" class="icon-button profile-trigger" aria-label="Ver perfil">
+                    <i class="fas fa-user"></i>
+                </button>
+                <button class="theme-toggle mobile-theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+
+            <div id="logout-container-mobile" class="logout-container" data-logout-container>
+                <button class="logout-trigger" aria-label="Cerrar sesión">
+                    <i class="fas fa-power-off"></i>
+                </button>
+                <div class="logout-confirmation-text">
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </div>
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="{{ url_for('index_route') }}" class="active">Inicio</a></li>
+                <li><a href="{{ url_for('analisis_page') }}">Análisis</a></li>
+                <li><a href="{{ url_for('zonas_vigiladas_page') }}">Zonas Vigiladas</a></li>
+                <li><a href="{{ url_for('incidentes_page') }}">Incidentes</a></li>
+                <li><a href="{{ url_for('alertas_main_page') }}">Alertas</a></li>
+                <li><a href="{{ url_for('personas_vehiculos_page') }}">Personas y Vehículos</a></li>
+            </ul>
+        </nav>
+        <button id="profile-button-desktop" class="icon-button profile-trigger" aria-label="Ver perfil">
+            <i class="fas fa-user"></i>
+        </button>
+        <button class="theme-toggle desktop-theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+<div id="logout-container-desktop" class="logout-container" data-logout-container>
+    <button class="logout-trigger" aria-label="Cerrar sesión">
+        <i class="fas fa-power-off"></i>
+    </button>
+    <div class="logout-confirmation-text">
+        <span>Cerrar Sesión</span>
+    </div>
+</div>
+    </header>
+
+    <main class="home-main-content">
+        <div class="hero-container">
+            <h1 class="vanguard-title">VANGUARD<span class="ia-part"> IA</span></h1>
+            <p class="hero-subtitle">
+                Desbloquea el poder de tus datos con análisis inteligente de vanguardia. Bienvenido al futuro de la IA.
+            </p>
+            <div class="cta-buttons-container">
+                <a href="{{ url_for('analisis_page') }}" class="cta-home-button primary">Comienza <i class="fas fa-arrow-right"></i></a>
+                <a href="#" class="cta-home-button secondary">
+                    <i class="fab fa-android"></i> Probar App
+                </a>
+            </div>
+        </div>
+
+        <section class="features-section" id="features-section">
+            <h2>Descubre lo que Vanguard IA puede hacer por ti</h2>
+            <div class="features-grid">
+                <div class="feature-card card"> 
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Análisis Profundo</h3>
+                    <p>Extrae insights valiosos de video, imagen y audio con nuestros modelos de IA avanzados.</p>
+                </div>
+                <div class="feature-card card">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Seguridad Inteligente</h3>
+                    <p>Mejora la vigilancia, detecta incidentes y automatiza respuestas en tiempo real.</p>
+                </div>
+                <div class="feature-card card">
+                    <div class="feature-icon"><i class="fas fa-cogs"></i></div> 
+                    <h3>Optimización de Procesos</h3>
+                    <p>Transforma información compleja en acciones estratégicas para optimizar operaciones.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="theme-transition-overlay" id="themeTransitionOverlay"></div>
+
+    <footer class="site-footer">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="footer-logo-container" style="text-align: center;">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light footer-logo">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark footer-logo">
+            </div>
+            <p style="text-align: center;">© <span id="currentYear"></span> Vanguard <span class="text-gradient">IA</span>. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <div id="profile-modal-overlay" class="modal-overlay">
+        <div id="profile-modal" class="modal-content card">
+            <button id="close-profile-modal" class="modal-close-button">×</button>
+            <div class="modal-header">
+                <i class="fas fa-user-circle icon-gradient"></i>
+                <h2>Perfil de Usuario</h2>
+            </div>
+            <div id="profile-modal-loader" class="modal-loader">
+                <div class="new-anim-spinner"></div>
+            </div>
+            <div id="profile-modal-body" class="modal-body" style="display:none;">
+                <form id="profile-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="profile-nombre">Nombre(s)</label>
+                            <input type="text" id="profile-nombre" name="nombre_completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-apellidos">Apellido(s)</label>
+                            <input type="text" id="profile-apellidos" name="apellidos" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="profile-correo">Correo Electrónico</label>
+                            <input type="email" id="profile-correo" name="correo" disabled>
+                            <small>El correo no se puede modificar.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-celular">Número de Celular</label>
+                            <input type="tel" id="profile-celular" name="numero_celular">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-rol">Rol</label>
+                            <input type="text" id="profile-rol" name="rol" disabled>
+                        </div>
+                    </div>
+                    <div class="password-section">
+                        <h4>Cambiar Contraseña (Opcional)</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="profile-current-password">Contraseña Actual</label>
+                                <input type="password" id="profile-current-password" name="current_password">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-new-password">Nueva Contraseña</label>
+                                <input type="password" id="profile-new-password" name="new_password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="save-profile-button" class="cta-button primary-cta">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const hrefAttribute = this.getAttribute('href');
+                if (hrefAttribute && hrefAttribute.length > 1 && document.querySelector(hrefAttribute)) {
+                    e.preventDefault();
+                    document.querySelector(hrefAttribute).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

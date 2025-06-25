@@ -1,0 +1,172 @@
+<!--
+██╗   ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ 
+██║   ██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗
+██║   ██║███████║██╔██╗ ██║██║  ███╗██║   ██║███████║██████╔╝██║  ██║
+╚██╗ ██╔╝██╔══██║██║╚██╗██║██║   ██║██║   ██║██╔══██║██╔══██╗██║  ██║
+╚████╔╝ ██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+ ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ 
+
+                             ██╗ █████╗ 
+                             ██║██╔══██╗
+                             ██║███████║
+                             ██║██╔══██║
+                             ██║██║  ██║
+                             ╚═╝╚═╝  ╚═╝
+-->
+                             
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanguard IA: Seguridad Inteligente Avanzada</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='logo2.png') }}" type="image/png">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="background-glow"></div>
+    </div>
+
+    <header class="main-header">
+        <nav class="glassmorphic-nav">
+            <div class="nav-content">
+                <a href="{{ url_for('inicio_route') }}" class="logo">
+                    <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard IA Logo" class="nav-logo-img">
+                    Vanguard <span class="text-gradient">IA</span>
+                </a>
+                <ul>
+                    <li><a href="#inicio" class="active">Inicio</a></li>
+                    <li><a href="#disponibilidad">Disponible</a></li>
+                    <li><a href="#caracteristicas">Características</a></li>
+                    <li><a href="#en-accion">En Acción</a></li>
+                    <li><a href="#sectores">Sectores</a></li>
+                    <li><a href="#final-cta">Empieza  Ya!</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="inicio" class="hero-section">
+            <div class="hero-content">
+                <h1>Vanguard IA <span class="text-gradient">Seguridad Inteligente</span> que Anticipa.</h1>
+                <p class="subtitle">Protección proactiva para municipios, empresas y comercios con IA multimodal que analiza video y audio en tiempo real.</p>
+                <a href="{{ url_for('login_page') }}" class="cta-button primary-cta">Descubre tu Solución</a>
+                <div class="key-benefit">
+                    <p>Tecnología de vanguardia para una seguridad automatizada, reducción de costos operativos y total compatibilidad con tus cámaras existentes.</p>
+                </div>
+                <div class="impact-stat">
+                    <p>"Transforma la respuesta a incidentes: hasta un <span class="text-accent-red">70% más rápida</span> con nuestra IA."</p>
+                </div>
+            </div>
+            <div class="hero-visual glassmorphic-element">
+                <img src="{{ url_for('static', filename='Análisis.jpg') }}" alt="IA analizando cámaras de seguridad en un entorno urbano">
+                <div class="visual-overlay">Análisis Predictivo</div>
+            </div>
+        </section>
+
+        <section id="disponibilidad" class="availability-section">
+            <h2>Disponible en <span class="text-gradient">Escritorio y Dispositivos Móviles</span></h2>
+            <p class="section-subtitle">Accede a tu panel de control y recibe alertas en tiempo real desde cualquier lugar, en cualquier momento.</p>
+            <div class="platform-image-container">
+
+                <div class="decorative-circle circle-1"></div>
+                <div class="decorative-circle circle-2"></div>
+                <div class="decorative-circle circle-3"></div>
+
+                <img src="{{ url_for('static', filename='movilpcdarck.jpg') }}" alt="Fondo tecnológico abstracto">
+                
+            </div>
+        </section>
+
+        <section id="caracteristicas" class="features-section">
+            <h2>Capacidades <span class="text-gradient">Excepcionales</span></h2>
+            <div class="features-grid">
+                <div class="feature-card glassmorphic-element">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 17.58A5 5 0 0015.42 22A5 5 0 0011 17.58"/><path d="M4 6.42A5 5 0 008.58 2A5 5 0 0013 6.42"/><path d="M10.5 17.5H4.5a2 2 0 01-2-2v-11a2 2 0 012-2H13"/><path d="M22 6.5V15a2 2 0 01-2 2h-2.5"/></svg></div>
+                   <h3>Compatibilidad Universal</h3>
+                   <p>Integración fluida con la mayoría de cámaras existentes sin necesidad de hardware adicional.</p>
+               </div>
+                <div class="feature-card glassmorphic-element">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><path d="M11 8v6"></path><path d="M8 11h6"></path></svg>
+                    </div>
+                    <h3>Análisis Multimodal Profundo</h3>
+                    <p>Detección precisa de eventos en video con IA de última generación.</p>
+                </div>
+                <div class="feature-card glassmorphic-element">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg></div>
+                   <h3>Alertas Inteligentes en Tiempo Real</h3>
+                   <p>Notificaciones instantáneas y priorizadas, rápida y efectiva ante cualquier suceso.</p>
+               </div>
+                <div class="feature-card glassmorphic-element">
+                     <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
+                    <h3>Análisis Contextual Avanzado</h3>
+                    <p>Potenciamos la IA con modelos de lenguaje visual para una comprensión más profunda y decisiones más precisas.</p>
+                </div>
+            </div>
+
+            <a href="{{ url_for('login_page') }}" class="cta-button secondary-cta">Ver la IA en Acción</a>
+        </section>
+
+        <section id="en-accion" class="demo-section">
+            <h2>Vanguard IA <span class="text-gradient">en Acción</span></h2>
+            <p class="section-subtitle">Visualiza el poder de nuestra inteligencia artificial protegiendo entornos reales. <br>Imágenes de nuestra plataforma y capacidades de análisis.</p>
+            <div class="screenshots-showcase">
+                <div class="screenshots-grid glassmorphic-element">
+                    <img src="{{ url_for('static', filename='captura_1.png') }}" alt="Dashboard principal de Vanguard IA con alertas">
+                    <img src="{{ url_for('static', filename='captura_2.png') }}" alt="Visualización de cámara con análisis IA superpuesto">
+                    <img src="{{ url_for('static', filename='captura_3.png') }}" alt="Reporte forense detallado de un incidente detectado">
+                </div>
+            </div>
+             <a href="{{ url_for('login_page') }}" class="cta-button primary-cta demo-cta">Accede</a>
+        </section>
+
+
+        <section id="sectores" class="clients-section">
+            <h2>Adaptado a <span class="text-gradient">Tus Necesidades</span></h2>
+            <p class="section-subtitle">Vanguard IA ofrece soluciones de seguridad inteligente de alto impacto para diversos sectores:</p>
+            <div class="sectors-grid">
+                <div class="sector-card glassmorphic-element">
+                    <div class="sector-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    </div>
+                    <h3>Entidades Gubernamentales</h3>
+                    <p>Optimiza la vigilancia urbana, agiliza la respuesta a incidentes y fortalece la seguridad ciudadana con análisis predictivo y alertas en tiempo real.</p>
+                    <span class="sector-benefit">Más eficiencia, ciudades más seguras.</span>
+                </div>
+                 <div class="sector-card glassmorphic-element">
+                    <div class="sector-icon">
+                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V5a2 2 0 00-2-2H6a2 2 0 00-2 2v4"></path><path d="M20 15v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4"></path><rect x="2" y="9" width="20" height="6" rx="2" ry="2"></rect></svg>
+                    </div>
+                    <h3>Empresas y Comercios</h3>
+                    <p>Protege tus activos, previene pérdidas y garantiza la seguridad de empleados y clientes en tiendas, oficinas, almacenes e industrias con IA proactiva.</p>
+                     <span class="sector-benefit">Menos riesgos, mayor rentabilidad.</span>
+                </div>
+                 <div class="sector-card glassmorphic-element">
+                     <div class="sector-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </div>
+                    <h3>Hogares y Comunidades</h3>
+                    <p>Brinda tranquilidad a tu familia y vecindario. Disuade intrusos, monitorea propiedades de forma inteligente y recibe alertas ante cualquier actividad sospechosa.</p>
+                    <span class="sector-benefit">Paz mental, entornos protegidos.</span>
+                </div>
+            </div>
+        </section>
+        
+        <section id="final-cta" class="final-cta-section glassmorphic-element">
+            <h2>¿Listo para <span class="text-gradient">Transformar tu Seguridad?</span></h2>
+            <p>Únete a la nueva era de la vigilancia inteligente. Accede a tu panel o regístrate para comenzar a proteger lo que más importa.</p>
+            <a href="{{ url_for('login_page') }}" class="cta-button primary-cta large-cta">Empezar Ahora</a>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard IA Logo Pequeño" class="footer-logo-img">
+        <p>© 2024 Vanguard IA. Todos los derechos reservados.</p>
+        <p class="footer-links"><a href="#">Política de Privacidad</a> | <a href="#">Términos de Servicio</a></p>
+    </footer>
+    <script src="{{ url_for('static', filename='script2.js') }}"></script>
+</body>
+</html>

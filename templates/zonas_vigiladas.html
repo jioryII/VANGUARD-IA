@@ -1,0 +1,325 @@
+<!--
+██╗   ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ 
+██║   ██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗
+██║   ██║███████║██╔██╗ ██║██║  ███╗██║   ██║███████║██████╔╝██║  ██║
+╚██╗ ██╔╝██╔══██║██║╚██╗██║██║   ██║██║   ██║██╔══██║██╔══██╗██║  ██║
+╚████╔╝ ██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+ ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ 
+
+                             ██╗ █████╗ 
+                             ██║██╔══██╗
+                             ██║███████║
+                             ██║██╔══██║
+                             ██║██║  ██║
+                             ╚═╝╚═╝  ╚═╝
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zonas Vigiladas - Vanguard IA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <link rel="icon" href="{{ url_for('static', filename='logo2.png') }}" type="image/png">
+    <style>
+
+        .map-container-wrapper {
+            margin-top: 30px; 
+            margin-bottom: 30px;
+        }
+        #zonesMap {
+            height: 480px;
+            width: 100%;
+            border-radius: calc(var(--border-radius) - 6px);
+            border: 1px solid var(--border-color);
+            background-color: var(--placeholder-bg);
+            cursor: crosshair;
+        }
+        .map-instructions {
+            font-size: 0.85em;
+            color: var(--text-secondary-color);
+            text-align: center;
+            margin-top: -20px;
+            margin-bottom: 25px;
+        }
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+            background-color: var(--card-bg) !important;
+            color: var(--text-color) !important;
+        }
+        .leaflet-popup-content-wrapper {
+             border-radius: var(--border-radius) !important;
+             box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+        }
+        .leaflet-popup-content { font-family: var(--font-family); font-size: 0.9em; }
+        .leaflet-popup-content p { margin: 5px 0; }
+        .leaflet-popup-content strong { color: var(--accent-color); }
+
+        body[data-theme="dark"] .leaflet-control-attribution a { color: #aaa; }
+
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); align-items: center; justify-content: center; }
+        .modal.visible { display: flex; }
+        .modal-content { background-color: var(--card-bg); margin: auto; padding: 25px 30px; border: 1px solid var(--border-color); border-radius: var(--border-radius); width: 90%; max-width: 550px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .modal-header h2 { margin: 0; font-size: 1.6em; color: var(--text-color); }
+        .close-button { color: var(--text-secondary-color); font-size: 1.8em; font-weight: bold; cursor: pointer; background: none; border: none; padding: 5px; line-height: 1; }
+        .close-button:hover, .close-button:focus { color: var(--text-color); }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9em; color: var(--text-secondary-color); }
+        .form-control { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); background-color: var(--bg-color); color: var(--text-color); border-radius: calc(var(--border-radius) - 4px); box-sizing: border-box; font-size: 1em; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+        .form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 2px var(--shadow-color); outline: none; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px; }
+        .modal-button { padding: 10px 20px; font-size: 0.9em; font-weight: 500; border-radius: calc(var(--border-radius) - 2px); cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+        .modal-button.primary { background-color: var(--accent-color); color: var(--bg-color); border: 1px solid var(--accent-color); }
+        .modal-button.primary:hover { background-color: var(--text-color); border-color: var(--text-color); }
+        body[data-theme="dark"] .modal-button.primary { color: var(--bg-color-dark-val); }
+        body[data-theme="dark"] .modal-button.primary:hover { color: var(--bg-color-dark-val); }
+        .modal-button.secondary { background-color: transparent; color: var(--text-secondary-color); border: 1px solid var(--border-color); }
+        .modal-button.secondary:hover { background-color: var(--link-hover-bg); color: var(--text-color); border-color: var(--text-color); }
+        .stats-overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { padding: 20px; text-align: center; }
+        .stat-card-number { font-size: 2.5em; font-weight: 700; color: var(--accent-color); margin-bottom: 5px; }
+        .stat-card-label { font-size: 0.95em; color: var(--text-secondary-color); }
+    </style>
+</head>
+<body data-theme="light">
+    <header class="top-bar">
+        <a href="{{ url_for('index_route') }}" class="logo-link">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark">
+                <span>VANGUARD <span class="text-gradient">IA</span></span>
+            </div>
+        </a>
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-wrapper">
+            <nav class="mobile-nav">
+                <ul>
+                    <li><a href="{{ url_for('index_route') }}" class="nav-link-mobile">Inicio</a></li>
+                    <li><a href="{{ url_for('analisis_page') }}" class="nav-link-mobile">Analisis</a></li>
+                    <li><a href="{{ url_for('zonas_vigiladas_page') }}" class="active nav-link-mobile">Zonas Vigiladas</a></li>
+                    <li><a href="{{ url_for('incidentes_page') }}" class="nav-link-mobile">Incidentes</a></li>
+                    <li><a href="{{ url_for('alertas_main_page') }}" class="nav-link-mobile">Alertas</a></li>
+                    <li><a href="{{ url_for('personas_vehiculos_page') }}" class="nav-link-mobile">Personas y Vehículos</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-controls-wrapper">
+                <button id="profile-button-mobile" class="icon-button profile-trigger" aria-label="Ver perfil">
+                    <i class="fas fa-user"></i>
+                </button>
+                <button class="theme-toggle mobile-theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+
+            <div id="logout-container-mobile" class="logout-container" data-logout-container>
+                <button class="logout-trigger" aria-label="Cerrar sesión">
+                    <i class="fas fa-power-off"></i>
+                </button>
+                <div class="logout-confirmation-text">
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </div>
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="{{ url_for('index_route') }}" >Inicio</a></li>
+                <li><a href="{{ url_for('analisis_page') }}">Analisis</a></li>
+                <li><a href="{{ url_for('zonas_vigiladas_page') }}" class="active">Zonas Vigiladas</a></li>
+                <li><a href="{{ url_for('incidentes_page') }}">Incidentes</a></li>
+                <li><a href="{{ url_for('alertas_main_page') }}">Alertas</a></li>
+                <li><a href="{{ url_for('personas_vehiculos_page') }}">Personas y Vehículos</a></li>
+            </ul>
+        </nav>
+        <button id="profile-button-desktop" class="icon-button profile-trigger" aria-label="Ver perfil">
+            <i class="fas fa-user"></i>
+        </button>
+        <button class="theme-toggle desktop-theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+<div id="logout-container-desktop" class="logout-container" data-logout-container>
+    <button class="logout-trigger" aria-label="Cerrar sesión">
+        <i class="fas fa-power-off"></i>
+    </button>
+    <div class="logout-confirmation-text">
+        <span>Cerrar Sesión</span>
+    </div>
+</div>
+    </header>
+
+    <main class="main-content">
+        <div class="zones-page-container main-content-item">
+            <div class="zones-header">
+                <h1>Zonas Vigiladas</h1>
+                <button class="add-zone-button" id="openAddZoneModalBtn">
+                    <i class="fas fa-plus"></i> Añadir Nueva Zona (Manual)
+                </button>
+            </div>
+
+            <div class="stats-overview">
+                 <div class="card stat-card">
+                    <div class="stat-card-number" id="stats-total-zones">0</div>
+                    <div class="stat-card-label">Zonas Totales</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-card-number" id="stats-active-zones">0</div>
+                    <div class="stat-card-label">Zonas Activas</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-card-number" id="stats-cameras-online">-</div>
+                    <div class="stat-card-label">Cámaras activas</div>
+                </div>
+            </div>
+
+            <div class="zones-grid" id="zonesGrid">
+                <div class="card zone-card placeholder-card" style="text-align: center; padding: 40px; grid-column: 1 / -1;">
+                    <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--text-secondary-color); margin-bottom: 15px;"></i>
+                    <p style="color: var(--text-secondary-color);">Cargando zonas...</p>
+                </div>
+            </div>
+
+            <div class="card map-container-wrapper">
+                 <div id="zonesMap">
+                    <div style="display:flex; justify-content:center; align-items:center; height:100%; flex-direction:column;">
+                        <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--text-secondary-color); margin-bottom: 10px;"></i>
+                        <small style="color: var(--text-secondary-color);">Cargando mapa...</small>
+                    </div>
+                 </div>
+            </div>
+            <p class="map-instructions">
+                <i class="fas fa-mouse-pointer"></i> Haz clic (o clic derecho) en el mapa para seleccionar la ubicación de una nueva zona.
+            </p>
+
+        </div>
+    </main>
+
+    <div id="zoneModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Añadir Nueva Zona</h2>
+                <button class="close-button" id="closeZoneModalBtn">×</button>
+            </div>
+            <form id="zoneForm">
+                <input type="hidden" id="zoneId" name="zone_id">
+                <div class="form-group">
+                    <label for="zoneName" class="form-label">Nombre de la Zona</label>
+                    <input type="text" id="zoneName" name="nombre_zona" class="form-control" required placeholder="Ej: Plaza de Armas">
+                </div>
+                <div class="form-group">
+                    <label for="zoneDescription" class="form-label">Descripción</label>
+                    <textarea id="zoneDescription" name="descripcion" class="form-control" rows="3" placeholder="Detalles..."></textarea>
+                </div>
+                <div class="form-group"> 
+                    <label for="zoneCenter" class="form-label">Centro (Punto WKT)</label>
+                    <input type="text" id="zoneCenter" name="centro" class="form-control" required readonly placeholder="Selecciona en el mapa">
+                    <small>Se autocompleta al hacer clic en el mapa.</small>
+                </div>
+                <div class="form-group">
+                    <label for="zoneCoordinates" class="form-label">Coordenadas Polígono (WKT)</label>
+                    <input type="text" id="zoneCoordinates" name="coordenadas" class="form-control" placeholder="POLYGON((-71.97 -13.51, ...))">
+                    <small>Opcional. Para delimitar un área.</small>
+                </div>
+                <div class="form-group">
+                    <label for="zoneIntensity" class="form-label">Intensidad (0.0 - 1.0)</label>
+                    <input type="number" id="zoneIntensity" name="intensidad" class="form-control" min="0" max="1" step="0.01" value="0.5">
+                    <small>Para el mapa de calor.</small>
+                </div>
+                <div class="form-group">
+                    <label for="zoneStatus" class="form-label">Estado</label>
+                    <select id="zoneStatus" name="estado" class="form-control">
+                        <option value="Activa">Activa</option>
+                        <option value="Inactiva">Inactiva</option>
+                        <option value="Mantenimiento">Mantenimiento</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="modal-button secondary" id="cancelZoneModalBtn">Cancelar</button>
+                    <button type="submit" class="modal-button primary">Guardar Zona</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="theme-transition-overlay" id="themeTransitionOverlay"></div>
+    <footer class="site-footer">
+         <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="footer-logo-container" style="text-align: center;">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light footer-logo">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark footer-logo">
+            </div>
+            <p style="text-align: center;">© <span id="currentYear"></span> Vanguard IA. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <div id="profile-modal-overlay" class="modal-overlay">
+        <div id="profile-modal" class="modal-content card">
+            <button id="close-profile-modal" class="modal-close-button">×</button>
+            <div class="modal-header">
+                <i class="fas fa-user-circle icon-gradient"></i>
+                <h2>Perfil de Usuario</h2>
+            </div>
+            <div id="profile-modal-loader" class="modal-loader">
+                <div class="new-anim-spinner"></div>
+            </div>
+            <div id="profile-modal-body" class="modal-body" style="display:none;">
+                <form id="profile-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="profile-nombre">Nombre(s)</label>
+                            <input type="text" id="profile-nombre" name="nombre_completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-apellidos">Apellido(s)</label>
+                            <input type="text" id="profile-apellidos" name="apellidos" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="profile-correo">Correo Electrónico</label>
+                            <input type="email" id="profile-correo" name="correo" disabled>
+                            <small>El correo no se puede modificar.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-celular">Número de Celular</label>
+                            <input type="tel" id="profile-celular" name="numero_celular">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-rol">Rol</label>
+                            <input type="text" id="profile-rol" name="rol" disabled>
+                        </div>
+                    </div>
+                    <div class="password-section">
+                        <h4>Cambiar Contraseña (Opcional)</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="profile-current-password">Contraseña Actual</label>
+                                <input type="password" id="profile-current-password" name="current_password">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-new-password">Nueva Contraseña</label>
+                                <input type="password" id="profile-new-password" name="new_password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="save-profile-button" class="cta-button primary-cta">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='zonas.js') }}"></script>
+</body>
+</html>

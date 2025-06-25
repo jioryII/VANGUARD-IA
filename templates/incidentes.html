@@ -1,0 +1,469 @@
+<!--
+██╗   ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ 
+██║   ██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗
+██║   ██║███████║██╔██╗ ██║██║  ███╗██║   ██║███████║██████╔╝██║  ██║
+╚██╗ ██╔╝██╔══██║██║╚██╗██║██║   ██║██║   ██║██╔══██║██╔══██╗██║  ██║
+╚████╔╝ ██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+ ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ 
+
+                             ██╗ █████╗ 
+                             ██║██╔══██╗
+                             ██║███████║
+                             ██║██╔══██║
+                             ██║██║  ██║
+                             ╚═╝╚═╝  ╚═╝
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incidentes - Vanguard IA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='logo2.png') }}" type="image/png">
+    <style>
+
+        .incidents-page-container {
+            grid-column: 1 / -1; 
+        }
+
+        .incidents-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .incidents-header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .report-incident-button { 
+            padding: 12px 22px;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--bg-color);
+            background-color: #dc3545;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            align-items: center;
+        }
+        .report-incident-button i { margin-right: 10px; }
+        .report-incident-button:hover {
+            background-color: #c82333; 
+            box-shadow: 0 4px 12px rgba(220,53,69,0.3);
+        }
+        body[data-theme="dark"] .report-incident-button {
+            background-color: #e64f5c;
+        }
+        body[data-theme="dark"] .report-incident-button:hover {
+            background-color: #dc3545;
+        }
+
+
+        .incidents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .incident-card {
+            display: flex;
+            flex-direction: column;
+        }
+        .incident-card-header {
+             display: flex;
+             justify-content: space-between;
+             align-items: flex-start;
+             margin-bottom: 12px;
+        }
+        .incident-card-type {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--text-color);
+            margin:0;
+        }
+        .incident-status {
+            font-size: 0.8em;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: 500;
+            white-space: nowrap;
+            text-transform: capitalize;
+        }
+        .incident-status.pendiente { background-color: rgba(255, 193, 7, 0.2); color: #b8860b; }
+        .incident-status.verificado { background-color: rgba(40, 167, 69, 0.2); color: #1e7e34; }
+        .incident-status.falso_positivo { background-color: rgba(108, 117, 125, 0.2); color: #545b62; }
+        .incident-status.en_investigacion { background-color: rgba(0, 123, 255, 0.2); color: #0069d9; }
+
+        body[data-theme="dark"] .incident-status.pendiente { background-color: rgba(255, 193, 7, 0.25); color: #ffcb3b; }
+        body[data-theme="dark"] .incident-status.verificado { background-color: rgba(40, 167, 69, 0.25); color: #5cb85c; }
+        body[data-theme="dark"] .incident-status.falso_positivo { background-color: rgba(108, 117, 125, 0.25); color: #adb5bd; }
+        body[data-theme="dark"] .incident-status.en_investigacion { background-color: rgba(0, 123, 255, 0.25); color: #54aeff; }
+
+
+        .incident-card-body p {
+            font-size: 0.95em;
+            color: var(--text-secondary-color);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+         .incident-card-body .detail {
+            font-size: 0.85em;
+            color: var(--text-secondary-color);
+            margin-bottom: 4px;
+        }
+        .incident-card-body .detail strong {
+            color: var(--text-color);
+        }
+        .incident-card-actions {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+        .incident-action-button { 
+            flex-grow: 1; padding: 10px 12px; font-size: 0.8em; text-align: center;
+            border: 1px solid var(--border-color); background-color: var(--card-bg);
+            color: var(--text-secondary-color); border-radius: calc(var(--border-radius) - 6px);
+            cursor: pointer; transition: all 0.2s ease; font-weight: 500;
+        }
+        .incident-action-button:hover {
+            background-color: var(--link-hover-bg); color: var(--text-color);
+            border-color: var(--accent-color); transform: translateY(-2px);
+        }
+
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); align-items: center; justify-content: center; }
+        .modal.visible { display: flex; }
+        .modal-content { background-color: var(--card-bg); margin: auto; padding: 25px 30px; border: 1px solid var(--border-color); border-radius: var(--border-radius); width: 90%; max-width: 600px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .modal-header h2 { margin: 0; font-size: 1.6em; color: var(--text-color); }
+        .close-button { color: var(--text-secondary-color); font-size: 1.8em; font-weight: bold; cursor: pointer; background: none; border: none; padding: 5px; line-height: 1; }
+        .close-button:hover, .close-button:focus { color: var(--text-color); }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9em; color: var(--text-secondary-color); }
+        .form-control { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); background-color: var(--bg-color); color: var(--text-color); border-radius: calc(var(--border-radius) - 4px); box-sizing: border-box; font-size: 1em; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+        .form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 2px var(--shadow-color); outline: none; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px; }
+        .modal-button { padding: 10px 20px; font-size: 0.9em; font-weight: 500; border-radius: calc(var(--border-radius) - 2px); cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+        .modal-button.primary { background-color: var(--accent-color); color: var(--bg-color); border: 1px solid var(--accent-color); }
+        .modal-button.primary:hover { background-color: var(--text-color); border-color: var(--text-color); }
+        body[data-theme="dark"] .modal-button.primary { color: var(--bg-color-dark-val); }
+        body[data-theme="dark"] .modal-button.primary:hover { color: var(--bg-color-dark-val); }
+        .modal-button.secondary { background-color: transparent; color: var(--text-secondary-color); border: 1px solid var(--border-color); }
+        .modal-button.secondary:hover { background-color: var(--link-hover-bg); color: var(--text-color); border-color: var(--text-color); }
+        .stats-overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { padding: 20px; text-align: center; }
+        .stat-card-number { font-size: 2.5em; font-weight: 700; color: var(--accent-color); margin-bottom: 5px; }
+        .stat-card-label { font-size: 0.95em; color: var(--text-secondary-color); }
+
+        .filters-card { margin-bottom: 30px; }
+        .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;}
+        .filter-actions button { margin-right: 10px; }
+    </style>
+</head>
+<body data-theme="light">
+    <header class="top-bar">
+
+        <a href="{{ url_for('index_route') }}" class="logo-link">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark">
+                <span>VANGUARD <span class="text-gradient">IA</span></span>
+            </div>
+        </a>
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-wrapper">
+            <nav class="mobile-nav">
+                <ul>
+                    <li><a href="{{ url_for('index_route') }}" class="nav-link-mobile">Inicio</a></li>
+                    <li><a href="{{ url_for('analisis_page') }}" class="nav-link-mobile">Analisis</a></li>
+                    <li><a href="{{ url_for('zonas_vigiladas_page') }}" class="nav-link-mobile">Zonas Vigiladas</a></li>
+                    <li><a href="{{ url_for('incidentes_page') }}" class="active nav-link-mobile">Incidentes</a></li>
+                    <li><a href="{{ url_for('alertas_main_page') }}" class="nav-link-mobile">Alertas</a></li>
+                    <li><a href="{{ url_for('personas_vehiculos_page') }}" class="nav-link-mobile">Personas y Vehículos</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-controls-wrapper">
+                <button id="profile-button-mobile" class="icon-button profile-trigger" aria-label="Ver perfil">
+                    <i class="fas fa-user"></i>
+                </button>
+                <button class="theme-toggle mobile-theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div id="logout-container-mobile" class="logout-container" data-logout-container>
+                <button class="logout-trigger" aria-label="Cerrar sesión">
+                    <i class="fas fa-power-off"></i>
+                </button>
+                <div class="logout-confirmation-text">
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </div>
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="{{ url_for('index_route') }}" >Inicio</a></li>
+                <li><a href="{{ url_for('analisis_page') }}" >Analisis</a></li>
+                <li><a href="{{ url_for('zonas_vigiladas_page') }}">Zonas Vigiladas</a></li>
+                <li><a href="{{ url_for('incidentes_page') }}" class="active">Incidentes</a></li>
+                <li><a href="{{ url_for('alertas_main_page') }}">Alertas</a></li>
+                <li><a href="{{ url_for('personas_vehiculos_page') }}">Personas y Vehículos</a></li>
+            </ul>
+        </nav>
+        <button id="profile-button-desktop" class="icon-button profile-trigger" aria-label="Ver perfil">
+            <i class="fas fa-user"></i>
+        </button>
+        <button class="theme-toggle desktop-theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+<div id="logout-container-desktop" class="logout-container" data-logout-container>
+    <button class="logout-trigger" aria-label="Cerrar sesión">
+        <i class="fas fa-power-off"></i>
+    </button>
+    <div class="logout-confirmation-text">
+        <span>Cerrar Sesión</span>
+    </div>
+</div>
+    </header>
+
+    <main class="main-content">
+        <div class="incidents-page-container">
+            <div class="incidents-header">
+                <h1>Gestión de Incidentes</h1>
+                <button class="report-incident-button" id="openReportIncidentModalBtn">
+                    <i class="fas fa-exclamation-triangle"></i> Reportar Incidente
+                </button>
+            </div>
+
+            <div class="stats-overview">
+                <div class="stat-card card">
+                    <div class="stat-card-number" id="stats-incidents-today">0</div>
+                    <div class="stat-card-label">Incidentes Hoy</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-card-number" id="stats-incidents-pending">0</div>
+                    <div class="stat-card-label">Pendientes de Revisión</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-card-number" id="stats-incidents-verified_percentage">0%</div>
+                    <div class="stat-card-label">Verificados</div>
+                </div>
+            </div>
+
+            <div class="card filters-card">
+                <div class="card-header" style="padding-bottom: 15px; margin-bottom:20px; border-bottom: 1px solid var(--border-color);">
+                    <h3 class="card-title" style="font-size: 1.4em; margin:0;">Filtros y Búsqueda</h3>
+                </div>
+                <div class="card-body" style="padding-top:0;">
+                    <form id="filterForm">
+                        <div class="filters-grid">
+                            <div class="form-group">
+                                <label for="filterType" class="form-label">Tipo de Incidente</label>
+                                <select id="filterType" name="tipo" class="form-control">
+                                    <option value="">Todos</option>
+                                    <option value="Persona Sospechosa">Persona Sospechosa</option>
+                                    <option value="Vehículo Sospechoso">Vehículo Sospechoso</option>
+                                    <option value="Acceso no autorizado">Acceso no autorizado</option>
+                                    <option value="Actividad Anómala">Actividad Anómala</option>
+                                    <option value="Vandalismo">Vandalismo</option>
+                                    <option value="Emergencia Médica">Emergencia Médica</option>
+                                    <option value="Incendio">Incendio</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="filterZone" class="form-label">Zona Afectada</label>
+                                <select id="filterZone" name="zona_afectada" class="form-control">
+                                    <option value="">Todas las Zonas</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="filterStatus" class="form-label">Estado del Incidente</label>
+                                <select id="filterStatus" name="estado_incidente" class="form-control">
+                                    <option value="">Todos</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="En Investigación">En Investigación</option>
+                                    <option value="Verificado">Verificado</option>
+                                    <option value="Falso Positivo">Falso Positivo</option>
+                                    <option value="Resuelto">Resuelto</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="filterDateStart" class="form-label">Fecha Desde</label>
+                                <input type="date" id="filterDateStart" name="fecha_desde" class="form-control">
+                            </div>
+                             <div class="form-group">
+                                <label for="filterDateEnd" class="form-label">Fecha Hasta</label>
+                                <input type="date" id="filterDateEnd" name="fecha_hasta" class="form-control">
+                            </div>
+                        </div>
+                        <div class="filter-actions">
+                            <button type="submit" class="modal-button primary"><i class="fas fa-filter"></i> Filtrar</button>
+                            <button type="button" id="resetFiltersBtn" class="modal-button secondary"><i class="fas fa-undo"></i> Limpiar</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="incidents-grid" id="incidentsGrid">
+                 <div class="card incident-card placeholder-card" style="text-align: center; padding: 40px; grid-column: 1 / -1;">
+                    <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--text-secondary-color); margin-bottom: 15px;"></i>
+                    <p style="color: var(--text-secondary-color);">Cargando incidentes...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="incidentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalIncidentTitle">Reportar Incidente</h2>
+                <button class="close-button" id="closeIncidentModalBtn">×</button>
+            </div>
+            <form id="incidentForm">
+                <input type="hidden" id="incidentId" name="id_incidente">
+                <div class="form-group">
+                    <label for="incidentType" class="form-label">Tipo de Incidente</label>
+                    <select id="incidentType" name="tipo" class="form-control" required>
+                        <option value="" disabled selected>Seleccione un tipo...</option>
+                        <option value="Persona Sospechosa">Persona Sospechosa</option>
+                        <option value="Vehículo Sospechoso">Vehículo Sospechoso</option>
+                        <option value="Acceso no autorizado">Acceso no autorizado</option>
+                        <option value="Actividad Anómala">Actividad Anómala</option>
+                        <option value="Vandalismo">Vandalismo</option>
+                        <option value="Emergencia Médica">Emergencia Médica</option>
+                        <option value="Incendio">Incendio</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="incidentZone" class="form-label">Zona Afectada</label>
+                    <select id="incidentZone" name="zona_afectada" class="form-control" required>
+                        <option value="" disabled selected>Seleccione una zona...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="incidentDescription" class="form-label">Descripción</label>
+                    <textarea id="incidentDescription" name="descripcion" class="form-control" rows="4" required placeholder="Detalles del incidente..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="incidentCoordinates" class="form-label">Coordenadas (Punto WKT)</label>
+                    <input type="text" id="incidentCoordinates" name="coordenadas" class="form-control" placeholder="POINT(lon lat) - Opcional">
+                </div>
+                 <div class="form-group">
+                    <label for="incidentConfidence" class="form-label">Grado de Confianza (0.00 - 1.00)</label>
+                    <input type="number" id="incidentConfidence" name="grado_confianza" class="form-control" min="0" max="1" step="0.01" value="0.75">
+                </div>
+                <div class="form-group">
+                    <label for="incidentStatus" class="form-label">Estado del Incidente</label>
+                    <select id="incidentStatus" name="estado_incidente" class="form-control">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En Investigación">En Investigación</option>
+                        <option value="Verificado">Verificado</option>
+                        <option value="Falso Positivo">Falso Positivo</option>
+                        <option value="Resuelto">Resuelto</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="modal-button secondary" id="cancelIncidentModalBtn">Cancelar</button>
+                    <button type="submit" class="modal-button primary" id="saveIncidentBtn">Guardar Incidente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="theme-transition-overlay" id="themeTransitionOverlay"></div>
+    <footer class="site-footer">
+        
+         <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="footer-logo-container" style="text-align: center;">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light footer-logo">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark footer-logo">
+            </div>
+            <p style="text-align: center;">© <span id="currentYear"></span> Vanguard IA. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <div id="profile-modal-overlay" class="modal-overlay">
+        <div id="profile-modal" class="modal-content card">
+            <button id="close-profile-modal" class="modal-close-button">×</button>
+            <div class="modal-header">
+                <i class="fas fa-user-circle icon-gradient"></i>
+                <h2>Perfil de Usuario</h2>
+            </div>
+            <div id="profile-modal-loader" class="modal-loader">
+                <div class="new-anim-spinner"></div>
+            </div>
+            <div id="profile-modal-body" class="modal-body" style="display:none;">
+                <form id="profile-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="profile-nombre">Nombre(s)</label>
+                            <input type="text" id="profile-nombre" name="nombre_completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-apellidos">Apellido(s)</label>
+                            <input type="text" id="profile-apellidos" name="apellidos" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="profile-correo">Correo Electrónico</label>
+                            <input type="email" id="profile-correo" name="correo" disabled>
+                            <small>El correo no se puede modificar.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-celular">Número de Celular</label>
+                            <input type="tel" id="profile-celular" name="numero_celular">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-rol">Rol</label>
+                            <input type="text" id="profile-rol" name="rol" disabled>
+                        </div>
+                    </div>
+                    <div class="password-section">
+                        <h4>Cambiar Contraseña (Opcional)</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="profile-current-password">Contraseña Actual</label>
+                                <input type="password" id="profile-current-password" name="current_password">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-new-password">Nueva Contraseña</label>
+                                <input type="password" id="profile-new-password" name="new_password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="save-profile-button" class="cta-button primary-cta">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='incidentes.js') }}"></script>
+</body>
+</html>

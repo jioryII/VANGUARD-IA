@@ -1,0 +1,1149 @@
+<!--
+██╗   ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ 
+██║   ██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗
+██║   ██║███████║██╔██╗ ██║██║  ███╗██║   ██║███████║██████╔╝██║  ██║
+╚██╗ ██╔╝██╔══██║██║╚██╗██║██║   ██║██║   ██║██╔══██║██╔══██╗██║  ██║
+╚████╔╝ ██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+ ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ 
+
+                             ██╗ █████╗ 
+                             ██║██╔══██╗
+                             ██║███████║
+                             ██║██╔══██║
+                             ██║██║  ██║
+                             ╚═╝╚═╝  ╚═╝
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personas y Vehículos - Vanguard IA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='logo2.png') }}" type="image/png">
+
+    <style>
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.main-content.page-personas-vehiculos {
+    display: block;
+    overflow-x: hidden;
+}
+
+.pv-container {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.pv-section {
+    flex: 1 1 calc(50% - 7.5px);
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pv-section > h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0 0 8px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--current-border-color);
+    display: flex;
+    align-items: center;
+}
+.pv-section > h2 i {
+    margin-right: 8px;
+    font-size: 0.8rem;
+    color: var(--accent-color);
+}
+
+.pv-section .card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.pv-section .card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--current-border-color);
+}
+.pv-section .card .card-header i {
+    margin-right: 8px;
+    font-size: 0.8rem;
+}
+
+.pv-section .card .card-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+.pv-section .card .card-body {
+    padding-top: 0;
+}
+
+.form-group {
+    margin-bottom: 12px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--text-secondary-color);
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+.required-star {
+    color: var(--danger-color);
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+    font-family: var(--font-family);
+    line-height: 1.4;
+    color: var(--text-color);
+    background-color: var(--placeholder-bg);
+    background-clip: padding-box;
+    border: 1px solid var(--current-border-color);
+    border-radius: calc(var(--border-radius) - 3px);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    box-sizing: border-box;
+}
+.form-control:focus {
+    color: var(--text-color);
+    background-color: var(--card-bg);
+    border-color: var(--accent-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem rgba(var(--new-rgb-accent-blue), 0.25);
+}
+.form-control::placeholder {
+    color: var(--text-secondary-color);
+    opacity: 0.7;
+}
+textarea.form-control {
+    min-height: 50px;
+    resize: vertical;
+}
+
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 10px 8px;
+    padding-right: 1.8rem;
+}
+body[data-theme="dark"] select.form-control {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23EAEAEB' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+input[type="file"].form-control {
+    padding: 5px;
+    line-height: 1.5;
+}
+
+#personaImagenPreview {
+    display: none;
+    width: 50px;
+    height: 50px;
+    margin-top: 6px;
+    border-radius: 5px;
+    border: 1px solid var(--current-border-color);
+    object-fit: cover;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    max-width: 100%;
+}
+
+.form-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: calc(var(--border-radius) - 3px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    line-height: 1.4;
+}
+.btn i {
+    margin-right: 5px;
+    font-size: 0.9rem;
+}
+.btn.btn-sm {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}
+.btn.btn-sm i {
+    margin-right: 3px;
+    font-size: 0.85rem;
+}
+
+.btn-primary {
+    background: var(--new-gradient-button-natural);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(var(--new-rgb-accent-blue), 0.15);
+    border: none;
+}
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(var(--new-rgb-accent-blue), 0.2);
+}
+.btn-primary:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    background: var(--switch-inactive-bg);
+    box-shadow: none;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-secondary-color);
+    border: 1px solid var(--current-border-color);
+}
+.btn-secondary:hover {
+    background-color: var(--link-hover-bg);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.btn-info {
+    background-color: var(--info-color);
+    color: #fff;
+    border-color: var(--info-color);
+}
+.btn-info:hover {
+    opacity: 0.85;
+}
+.btn-danger {
+    background-color: var(--danger-color);
+    color: #fff;
+    border-color: var(--danger-color);
+}
+.btn-danger:hover {
+    opacity: 0.85;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--current-border-color);
+    border-radius: calc(var(--border-radius) - 3px);
+}
+.table {
+    width: 100%;
+    min-width: 100%;
+    margin-bottom: 0;
+    color: var(--text-color);
+    border-collapse: collapse;
+}
+.table th, .table td {
+    padding: 0.5rem 0.4rem;
+    vertical-align: middle;
+    border-top: 1px solid var(--current-border-color);
+    font-size: 0.85rem;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+.table tr:first-child th, .table tr:first-child td {
+    border-top: none;
+}
+
+.table thead th {
+    border-top: none;
+    border-bottom: 2px solid var(--current-border-color);
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary-color);
+    background-color: var(--placeholder-bg);
+}
+.table thead th:first-child {
+    border-top-left-radius: calc(var(--border-radius) - 4px);
+}
+.table thead th:last-child {
+    border-top-right-radius: calc(var(--border-radius) - 4px);
+}
+.table tbody tr:hover {
+    background-color: var(--link-hover-bg);
+}
+
+.td-foto {
+    width: 40px;
+    text-align: center;
+    padding: 0 0.2rem;
+}
+.table-photo-container {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--placeholder-bg);
+    border: 1px solid var(--current-border-color);
+}
+.table-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.placeholder-user-icon {
+    font-size: 1.2rem;
+    color: var(--text-secondary-color);
+    opacity: 0.7;
+}
+
+.td-nombre {
+    min-width: 100px;
+    font-weight: 500;
+}
+.td-motivo {
+    min-width: 120px;
+    font-size: 0.8rem;
+    color: var(--text-secondary-color);
+}
+.td-acciones {
+    text-align: right;
+    min-width: 80px;
+    white-space: nowrap;
+}
+
+.table-actions .btn {
+    margin: 0 1px;
+}
+.table-actions .btn i {
+    margin-right: 3px;
+}
+.action-text {
+    display: inline;
+}
+
+.status-badge {
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-transform: capitalize;
+    border: 1px solid transparent;
+}
+.status-badge.status-no_asignado {
+    background-color: #e9ecef;
+    color: #495057;
+    border-color: #ced4da;
+}
+.status-badge.status-buscado {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+.status-badge.status-sospechoso {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffeeba;
+}
+.status-badge.status-restringido {
+    background-color: #fce8e6;
+    color: #c5221f;
+    border-color: #f7c7c4;
+}
+.status-badge.status-autorizado {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+.status-badge.status-robado {
+    background-color: #dc354533;
+    color: #dc3545;
+    border-color: #dc354588;
+}
+.status-badge.status-otro {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border-color: #bee5eb;
+}
+
+body[data-theme="dark"] .status-badge.status-no_asignado {
+    background-color: #495057;
+    color: #e9ecef;
+    border-color: #6c757d;
+}
+body[data-theme="dark"] .status-badge.status-buscado {
+    background-color: #721c24;
+    color: #f8d7da;
+    border-color: #8c2d36;
+}
+body[data-theme="dark"] .status-badge.status-sospechoso {
+    background-color: #856404;
+    color: #fff3cd;
+    border-color: #997404;
+}
+body[data-theme="dark"] .status-badge.status-restringido {
+    background-color: #c5221f;
+    color: #fce8e6;
+    border-color: #d03c38;
+}
+body[data-theme="dark"] .status-badge.status-autorizado {
+    background-color: #155724;
+    color: #d4edda;
+    border-color: #1c7430;
+}
+body[data-theme="dark"] .status-badge.status-robado {
+    background-color: #dc354555;
+    color: #ff8a94;
+    border-color: #dc3545bb;
+}
+body[data-theme="dark"] .status-badge.status-otro {
+    background-color: #0c5460;
+    color: #d1ecf1;
+    border-color: #117a8b;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    overflow-y: auto;
+}
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10px;
+    padding: 12px 15px;
+    border: 1px solid var(--current-border-color);
+    border-radius: calc(var(--border-radius) - 2px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 350px;
+    position: relative;
+    transform: translateY(-10px) scale(0.98);
+    opacity: 0;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+.modal.show .modal-content {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+.modal-content h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+.modal-content p {
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: var(--text-secondary-color);
+    line-height: 1.5;
+}
+.close-button {
+    color: var(--text-secondary-color);
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    padding: 3px;
+}
+.close-button:hover, .close-button:focus {
+    color: var(--text-color);
+}
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--current-border-color);
+}
+
+#toast-container {
+    position: fixed;
+    top: calc(var(--top-bar-height) + 15px);
+    right: 10px;
+    z-index: 1060;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: auto;
+    max-width: calc(100% - 20px);
+}
+@media (max-width: 600px) {
+    #toast-container {
+        left: 10px;
+        right: 10px;
+        max-width: none;
+        width: calc(100% - 20px);
+    }
+}
+
+.toast {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    padding: 8px 12px;
+    border-radius: calc(var(--border-radius) - 2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid var(--current-border-color);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 200px;
+    max-width: 300px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+}
+.toast::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: transparent;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+.toast.hide {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+.toast i.fas {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+.toast.success::before {
+    background-color: var(--success-color);
+}
+.toast.success i {
+    color: var(--success-color);
+}
+.toast.error::before {
+    background-color: var(--danger-color);
+}
+.toast.error i {
+    color: var(--danger-color);
+}
+.toast.info::before {
+    background-color: var(--info-color);
+}
+.toast.info i {
+    color: var(--info-color);
+}
+.toast.warning::before {
+    background-color: var(--warning-color);
+}
+.toast.warning i {
+    color: var(--warning-color);
+}
+
+.toast-message {
+    flex-grow: 1;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+.toast-close-button {
+    background: none;
+    border: none;
+    color: var(--text-secondary-color);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0 3px;
+    margin-left: auto;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.toast-close-button:hover {
+    color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+    .pv-container {
+        flex-direction: column;
+        gap: 10px;
+        padding: 5px 0;
+    }
+    .pv-section {
+        flex: 1 1 100%;
+        min-width: 0;
+        width: 100%;
+    }
+    .pv-section > h2 {
+        font-size: 1.2rem;
+    }
+    .pv-section .card {
+        padding: 8px;
+    }
+    .pv-section .card .card-header {
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+    }
+    .pv-section .card .card-title {
+        font-size: 1rem;
+    }
+    .form-group {
+        margin-bottom: 10px;
+    }
+    .form-label {
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+    }
+    .form-control {
+        padding: 5px 6px;
+        font-size: 0.85rem;
+    }
+    textarea.form-control {
+        min-height: 40px;
+    }
+    #personaImagenPreview {
+        width: 40px;
+        height: 40px;
+        margin-top: 4px;
+    }
+    .form-actions {
+        margin-top: 10px;
+        gap: 4px;
+    }
+    .btn {
+        padding: 5px 8px;
+        font-size: 0.8rem;
+    }
+    .btn i {
+        margin-right: 3px;
+        font-size: 0.8rem;
+    }
+    .btn.btn-sm {
+        padding: 3px 6px;
+    }
+    .table-responsive {
+        margin: 0 -8px;
+    }
+    .table th, .table td {
+        padding: 0.4rem 0.3rem;
+        font-size: 0.8rem;
+    }
+    .td-foto {
+        width: 35px;
+    }
+    .table-photo-container {
+        width: 20px;
+        height: 20px;
+    }
+    .placeholder-user-icon {
+        font-size: 1rem;
+    }
+    .td-nombre {
+        min-width: 80px;
+    }
+    .td-motivo {
+        min-width: 100px;
+    }
+    .td-acciones {
+        min-width: 70px;
+    }
+    .table-actions .btn {
+        margin: 0;
+    }
+    .table-actions .btn i {
+        margin-right: 2px;
+    }
+    .status-badge {
+        padding: 2px 5px;
+        font-size: 0.7rem;
+    }
+    .modal-content {
+        width: 85%;
+        max-width: 300px;
+        padding: 10px 12px;
+    }
+    .modal-content h4 {
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+    }
+    .modal-content p {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+    }
+    .close-button {
+        top: 6px;
+        right: 10px;
+        font-size: 1.3rem;
+    }
+    .modal-actions {
+        margin-top: 10px;
+        padding-top: 10px;
+        gap: 4px;
+    }
+    .toast {
+        padding: 6px 10px;
+        min-width: 180px;
+        max-width: 280px;
+    }
+    .toast i.fas {
+        font-size: 0.9rem;
+    }
+    .toast-message {
+        font-size: 0.8rem;
+    }
+    .toast-close-button {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pv-container {
+        gap: 8px;
+    }
+    .pv-section > h2 {
+        font-size: 1.1rem;
+    }
+    .form-actions {
+        flex-direction: column;
+    }
+    .form-actions .btn {
+        width: 100%;
+        padding: 6px 8px;
+    }
+    .td-acciones {
+        text-align: center;
+    }
+    .table-actions {
+        justify-content: center;
+        gap: 4px;
+    }
+    .table-actions .btn.btn-sm .action-text {
+        display: none;
+    }
+    .modal-actions {
+        flex-direction: column;
+    }
+    .modal-actions .btn {
+        width: 100%;
+        padding: 6px 8px;
+    }
+    .toast {
+        min-width: calc(100% - 10px);
+        max-width: calc(100% - 10px);
+        margin: 0 5px;
+    }
+}
+
+@media (max-width: 360px) {
+    .pv-section .card {
+        padding: 6px;
+    }
+    .form-control {
+        padding: 4px 5px;
+        font-size: 0.8rem;
+    }
+    #personaImagenPreview {
+        width: 35px;
+        height: 35px;
+    }
+    .btn {
+        padding: 4px 6px;
+        font-size: 0.75rem;
+    }
+    .table th, .table td {
+        padding: 0.3rem 0.2rem;
+    }
+    .td-foto {
+        width: 30px;
+    }
+    .table-photo-container {
+        width: 18px;
+        height: 18px;
+    }
+    .placeholder-user-icon {
+        font-size: 0.9rem;
+    }
+    .td-nombre {
+        min-width: 70px;
+    }
+    .td-motivo {
+        min-width: 90px;
+    }
+    .td-acciones {
+        min-width: 60px;
+    }
+    .status-badge {
+        padding: 1px 4px;
+        font-size: 0.65rem;
+    }
+}
+    </style>
+</head>
+<body data-theme="light">
+    <header class="top-bar">
+        <a href="{{ url_for('index_route') }}" class="logo-link">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark">
+                <span>VANGUARD <span class="text-gradient">IA</span></span>
+            </div>
+        </a>
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-wrapper">
+            <nav class="mobile-nav">
+                <ul>
+                    <li><a href="{{ url_for('index_route') }}" class="nav-link-mobile">Inicio</a></li>
+                    <li><a href="{{ url_for('analisis_page') }}" class="nav-link-mobile">Análisis</a></li>
+                    <li><a href="{{ url_for('zonas_vigiladas_page') }}" class="nav-link-mobile">Zonas Vigiladas</a></li>
+                    <li><a href="{{ url_for('incidentes_page') }}" class="nav-link-mobile">Incidentes</a></li>
+                    <li><a href="{{ url_for('alertas_main_page') }}" class="nav-link-mobile">Alertas</a></li>
+                    <li><a href="{{ url_for('personas_vehiculos_page') }}" class="active nav-link-mobile">Personas y Vehículos</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-controls-wrapper">
+                <button id="profile-button-mobile" class="icon-button profile-trigger" aria-label="Ver perfil">
+                    <i class="fas fa-user"></i>
+                </button>
+                <button class="theme-toggle mobile-theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div id="logout-container-mobile" class="logout-container" data-logout-container>
+                <button class="logout-trigger" aria-label="Cerrar sesión">
+                    <i class="fas fa-power-off"></i>
+                </button>
+                <div class="logout-confirmation-text">
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </div>
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="{{ url_for('index_route') }}" >Inicio</a></li>
+                <li><a href="{{ url_for('analisis_page') }}">Análisis</a></li>
+                <li><a href="{{ url_for('zonas_vigiladas_page') }}">Zonas Vigiladas</a></li>
+                <li><a href="{{ url_for('incidentes_page') }}">Incidentes</a></li>
+                <li><a href="{{ url_for('alertas_main_page') }}">Alertas</a></li>
+                <li><a href="{{ url_for('personas_vehiculos_page') }}" class="active">Personas y Vehículos</a></li>
+            </ul>
+        </nav>
+        <button id="profile-button-desktop" class="icon-button profile-trigger" aria-label="Ver perfil">
+            <i class="fas fa-user"></i>
+        </button>
+        <button class="theme-toggle desktop-theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+<div id="logout-container-desktop" class="logout-container" data-logout-container>
+    <button class="logout-trigger" aria-label="Cerrar sesión">
+        <i class="fas fa-power-off"></i>
+    </button>
+    <div class="logout-confirmation-text">
+        <span>Cerrar Sesión</span>
+    </div>
+</div>
+    </header>
+
+    <main class="main-content page-personas-vehiculos">
+        <div class="pv-container">
+            <div class="pv-section">
+                <h2><i class="fas fa-users"></i> Gestión de Personas</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title" id="formPersonaTitle"><i class="fas fa-user-plus"></i> Registrar Nueva Persona</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="formRegistrarPersona" enctype="multipart/form-data">
+                            <input type="hidden" id="personaId" name="personaId">
+                            <div class="form-group">
+                                <label for="personaNombre" class="form-label">Nombre Completo <span class="required-star">*</span></label>
+                                <input type="text" id="personaNombre" name="nombre" class="form-control" placeholder="Nombre y apellidos" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="personaIdentificacion" class="form-label">Identificación</label>
+                                <input type="text" id="personaIdentificacion" name="identificacion" class="form-control" placeholder="DNI, Cédula, Pasaporte, etc.">
+                            </div>
+                            <div class="form-group">
+                                <label for="personaEstado" class="form-label">Estado <span class="required-star">*</span></label>
+                                <select id="personaEstado" name="estado_persona" class="form-control" required>
+                                    <option value="No asignado" selected>No asignado</option>
+                                    <option value="Buscado">Buscado</option>
+                                    <option value="Sospechoso">Sospechoso</option>
+                                    <option value="Restringido">Restringido</option>
+                                    <option value="Autorizado">Autorizado</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="personaMotivoContainer" style="display: none;">
+                                <label for="personaMotivo" class="form-label">Motivo de Estado Especial <span class="required-star">*</span></label>
+                                <textarea id="personaMotivo" name="motivo_busqueda" class="form-control" rows="2" placeholder="Razón del estado (buscado, sospechoso, etc.)"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="personaImagen" class="form-label">Imagen Facial (para reconocimiento) <span id="imagenPersonaObligatoria" class="required-star">*</span></label>
+                                <input type="file" id="personaImagen" name="imagen_facial" class="form-control" accept="image/jpeg, image/png, image/jpg">
+                                <img id="personaImagenPreview" src="#" alt="Vista previa de imagen">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <span id="btnSubmitPersonaText">Registrar Persona</span></button>
+                                <button type="button" id="btnCancelarEdicionPersona" class="btn btn-secondary" style="display: none;"><i class="fas fa-times"></i> Cancelar Edición</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card list-card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-list-ul"></i> Personas Registradas</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="tablaPersonas">
+                                <thead>
+                                    <tr>
+                                        <th class="td-foto">Foto</th>
+                                        <th class="td-nombre">Nombre</th>
+                                        <th>Identificación</th>
+                                        <th>Estado</th>
+                                        <th class="td-motivo">Motivo</th>
+                                        <th class="td-acciones">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pv-section">
+                <h2><i class="fas fa-car"></i> Gestión de Vehículos</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title" id="formVehiculoTitle"><i class="fas fa-car-side"></i> Registrar Nuevo Vehículo</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="formRegistrarVehiculo">
+                            <input type="hidden" id="vehiculoId" name="vehiculoId">
+                            <div class="form-group">
+                                <label for="vehiculoPlaca" class="form-label">Placa <span class="required-star">*</span></label>
+                                <input type="text" id="vehiculoPlaca" name="placa" class="form-control" placeholder="ABC-123 o ABC1234" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="vehiculoMarca" class="form-label">Marca</label>
+                                <input type="text" id="vehiculoMarca" name="marca" class="form-control" placeholder="Ej: Toyota">
+                            </div>
+                            <div class="form-group">
+                                <label for="vehiculoModelo" class="form-label">Modelo</label>
+                                <input type="text" id="vehiculoModelo" name="modelo" class="form-control" placeholder="Ej: Corolla">
+                            </div>
+                            <div class="form-group">
+                                <label for="vehiculoColor" class="form-label">Color</label>
+                                <input type="text" id="vehiculoColor" name="color" class="form-control" placeholder="Ej: Blanco">
+                            </div>
+                            <div class="form-group">
+                                <label for="vehiculoPropietario" class="form-label">Propietario</label>
+                                <select id="vehiculoPropietario" name="id_propietario" class="form-control">
+                                    <option value="">(Sin propietario asignado)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="vehiculoEstado" class="form-label">Estado <span class="required-star">*</span></label>
+                                <select id="vehiculoEstado" name="estado_vehiculo" class="form-control" required>
+                                    <option value="Autorizado" selected>Autorizado</option>
+                                    <option value="Buscado">Buscado</option>
+                                    <option value="Sospechoso">Sospechoso</option>
+                                    <option value="Robado">Robado</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                             <div class="form-group" id="vehiculoMotivoContainer" style="display: none;">
+                                <label for="vehiculoMotivo" class="form-label">Motivo de Estado Especial <span class="required-star">*</span></label>
+                                <textarea id="vehiculoMotivo" name="motivo_busqueda_vehiculo" class="form-control" rows="2" placeholder="Razón del estado (buscado, sospechoso, etc.)"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="vehiculoNotas" class="form-label">Notas Adicionales</label>
+                                <textarea id="vehiculoNotas" name="notas" class="form-control" rows="2" placeholder="Información relevante sobre el vehículo..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <span id="btnSubmitVehiculoText">Registrar Vehículo</span></button>
+                                <button type="button" id="btnCancelarEdicionVehiculo" class="btn btn-secondary" style="display: none;"><i class="fas fa-times"></i> Cancelar Edición</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card list-card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-list-ul"></i> Vehículos Registrados</h3>
+                    </div>
+                    <div class="card-body">
+                         <div class="table-responsive">
+                            <table class="table" id="tablaVehiculos">
+                                <thead>
+                                    <tr>
+                                        <th>Placa</th>
+                                        <th>Marca y Modelo</th>
+                                        <th>Color</th>
+                                        <th>Propietario</th>
+                                        <th>Estado</th>
+                                        <th class="td-motivo">Motivo</th>
+                                        <th class="td-acciones">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="confirmDeleteModal" class="modal"> 
+        <div class="modal-content">
+            <button class="close-button" aria-label="Cerrar">×</button>
+            <h4>Confirmar Eliminación</h4>
+            <p id="confirmDeleteMessage">¿Estás seguro de que deseas eliminar este elemento?</p>
+            <div class="modal-actions">
+                <button id="btnCancelDelete" type="button" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</button>
+                <button id="btnConfirmDelete" type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="theme-transition-overlay" id="themeTransitionOverlay"></div>
+
+    <footer class="site-footer">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="footer-logo-container" style="text-align: center;">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light footer-logo">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark footer-logo">
+            </div>
+            <p style="text-align: center;">© <span id="currentYear"></span> Vanguard IA. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <div id="profile-modal-overlay" class="modal-overlay">
+        <div id="profile-modal" class="modal-content card">
+            <button id="close-profile-modal" class="modal-close-button">×</button>
+            <div class="modal-header">
+                <i class="fas fa-user-circle icon-gradient"></i>
+                <h2>Perfil de Usuario</h2>
+            </div>
+            <div id="profile-modal-loader" class="modal-loader">
+                <div class="new-anim-spinner"></div>
+            </div>
+            <div id="profile-modal-body" class="modal-body" style="display:none;">
+                <form id="profile-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="profile-nombre">Nombre(s)</label>
+                            <input type="text" id="profile-nombre" name="nombre_completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-apellidos">Apellido(s)</label>
+                            <input type="text" id="profile-apellidos" name="apellidos" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="profile-correo">Correo Electrónico</label>
+                            <input type="email" id="profile-correo" name="correo" disabled>
+                            <small>El correo no se puede modificar.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-celular">Número de Celular</label>
+                            <input type="tel" id="profile-celular" name="numero_celular">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-rol">Rol</label>
+                            <input type="text" id="profile-rol" name="rol" disabled>
+                        </div>
+                    </div>
+                    <div class="password-section">
+                        <h4>Cambiar Contraseña (Opcional)</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="profile-current-password">Contraseña Actual</label>
+                                <input type="password" id="profile-current-password" name="current_password">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-new-password">Nueva Contraseña</label>
+                                <input type="password" id="profile-new-password" name="new_password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="save-profile-button" class="cta-button primary-cta">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        const IMAGENES_REF_BASE_URL = "{{ url_for('serve_personas_imagen_ref', filename='') }}";
+    </script>
+    <script src="{{ url_for('static', filename='personas_vehiculos.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script> 
+</body>
+</html>

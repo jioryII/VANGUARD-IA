@@ -1,0 +1,8 @@
+MYSQL_HOST=---servidor--
+MYSQL_USER=--usuario--
+MYSQL_PASSWORD=--contraseña bd--
+MYSQL_DB=--nombre db--
+MYSQL_PORT=--puerto--
+GEMINI_API_KEY=--api de gemini--
+REMITENTE_EMAIL=--correo admin--
+PASSWORD_SMTP=--contraseña--

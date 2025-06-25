@@ -1,0 +1,256 @@
+<!--
+██╗   ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ 
+██║   ██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗
+██║   ██║███████║██╔██╗ ██║██║  ███╗██║   ██║███████║██████╔╝██║  ██║
+╚██╗ ██╔╝██╔══██║██║╚██╗██║██║   ██║██║   ██║██╔══██║██╔══██╗██║  ██║
+╚████╔╝ ██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+ ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ 
+
+                             ██╗ █████╗ 
+                             ██║██╔══██╗
+                             ██║███████║
+                             ██║██╔══██║
+                             ██║██║  ██║
+                             ╚═╝╚═╝  ╚═╝
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanguard Analisis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='logo2.png') }}" type="image/png">
+</head>
+<body data-theme="light">
+    <header class="top-bar">
+        <a href="{{ url_for('index_route') }}" class="logo-link">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark">
+                <span>VANGUARD <span class="text-gradient">IA</span></span>
+            </div>
+        </a>
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-wrapper">
+            <nav class="mobile-nav">
+                <ul>
+                    <li><a href="{{ url_for('index_route') }}" class="nav-link-mobile">Inicio</a></li>
+                    <li><a href="{{ url_for('analisis_page') }}" class="active nav-link-mobile">Analisis</a></li>
+                    <li><a href="{{ url_for('zonas_vigiladas_page') }}" class="nav-link-mobile">Zonas Vigiladas</a></li>
+                    <li><a href="{{ url_for('incidentes_page') }}" class="nav-link-mobile">Incidentes</a></li>
+                    <li><a href="{{ url_for('alertas_main_page') }}" class="nav-link-mobile">Alertas</a></li>
+                    <li><a href="{{ url_for('personas_vehiculos_page') }}" class="nav-link-mobile">Personas y Vehículos</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-controls-wrapper">
+                <button id="profile-button-mobile" class="icon-button profile-trigger" aria-label="Ver perfil">
+                    <i class="fas fa-user"></i>
+                </button>
+                <button class="theme-toggle mobile-theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div id="logout-container-mobile" class="logout-container" data-logout-container>
+                <button class="logout-trigger" aria-label="Cerrar sesión">
+                    <i class="fas fa-power-off"></i>
+                </button>
+                <div class="logout-confirmation-text">
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </div>
+        </div>
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="{{ url_for('index_route') }}" >Inicio</a></li>
+                <li><a href="{{ url_for('analisis_page') }}" class="active">Analisis</a></li>
+                <li><a href="{{ url_for('zonas_vigiladas_page') }}">Zonas Vigiladas</a></li>
+                <li><a href="{{ url_for('incidentes_page') }}">Incidentes</a></li>
+                <li><a href="{{ url_for('alertas_main_page') }}">Alertas</a></li>
+                <li><a href="{{ url_for('personas_vehiculos_page') }}">Personas y Vehículos</a></li>
+            </ul>
+        </nav>
+        <button id="profile-button-desktop" class="icon-button profile-trigger" aria-label="Ver perfil">
+            <i class="fas fa-user"></i>
+        </button>
+        <button class="theme-toggle desktop-theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+<div id="logout-container-desktop" class="logout-container" data-logout-container>
+    <button class="logout-trigger" aria-label="Cerrar sesión">
+        <i class="fas fa-power-off"></i>
+    </button>
+    <div class="logout-confirmation-text">
+        <span>Cerrar Sesión</span>
+    </div>
+</div>
+    </header>
+
+    <main class="main-content">
+        <div class="card upload-area main-content-item" id="upload-section">
+            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+            <p>Subir o arrastrar aquí (Video/Imagen/Audio)</p>
+            <input type="file" id="fileInput" accept="video/*,image/*,audio/*,.png,.jpg,.jpeg,.mp4,.avi,.mov,.mp3,.wav,.ogg,.m4a" style="display: none;">
+        </div>
+
+        <button class="analyze-button main-content-item cta-button primary-cta" id="analyzeButton">Analizar</button>
+
+        <div class="card models-list main-content-item" id="models-section">
+            <h2>Video/Imagen modelos</h2>
+            <div class="switch-item">
+                <span>Analisis de Personas</span>
+                <label class="switch">
+                    <input type="checkbox" id="model_d_rostro" data-model-id="D_Rostro">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="switch-item">
+                <span>Analisis de Autos</span>
+                <label class="switch">
+                    <input type="checkbox" id="model_d_placas" data-model-id="D_Placas">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="switch-item">
+                <span>Analisis Profundo</span>
+                <label class="switch">
+                    <input type="checkbox" id="model_gemini" data-model-id="Analisis_profundo">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <h2 class="models-title-spacer">Audio modelos</h2>
+            <div class="switch-item">
+                <span>Audio Contexto</span>
+                <label class="switch">
+                    <input type="checkbox" id="model_audio_contexto" data-model-id="Audio_Contexto">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="card video-card main-content-item" id="media-preview-section">
+            <span class="video-card-title" id="media-preview-title">Multimedia subida</span>
+            <div class="video-content-area aspect-16-9">
+                <img src="" alt="Multimedia subida" class="video-media" id="media-preview-img" style="display: none;">
+                <video controls class="video-media" id="media-preview-video" style="display: none;"></video>
+                <div class="placeholder-icon" id="media-placeholder-icon"><i class="fas fa-photo-video"></i></div>
+                
+                <div class="loading-overlay" id="mediaLoadingOverlay">
+                    <div class="new-anim-smoke-effect">
+                        <div class="new-anim-smoke"></div>
+                        <div class="new-anim-smoke"></div>
+                        <div class="new-anim-smoke"></div>
+                        <div class="new-anim-smoke"></div>
+                        <div class="new-anim-smoke"></div>
+                    </div>
+                    <div class="new-anim-inner-shadow"></div>
+                    <div class="new-anim-text-animation">
+                        <span class="new-anim-letter">A</span><span class="new-anim-letter">n</span><span class="new-anim-letter">a</span><span class="new-anim-letter">l</span><span class="new-anim-letter">i</span><span class="new-anim-letter">z</span><span class="new-anim-letter">a</span><span class="new-anim-letter">n</span><span class="new-anim-letter">d</span><span class="new-anim-letter">o</span><span class="new-anim-letter">.</span><span class="new-anim-letter">.</span><span class="new-anim-letter">.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card detection-description main-content-item" id="analysis-result-section">
+            Listo para empezar!!
+        </div>
+        
+        <div class="small-videos-container main-content-item" id="small-videos-section">
+            <div class="card video-card original-video">
+                <span class="video-card-title">Multimedia original</span>
+                <div class="video-content-area aspect-16-9">
+                    <img src="" alt="Original" class="video-media" id="original-media-img" style="display: none;">
+                    <video controls class="video-media" id="original-media-video" style="display:none;"></video>
+                    <div class="placeholder-icon" id="original-media-placeholder"><i class="fas fa-film"></i></div>
+                </div>
+            </div>
+            <div class="card video-card analyzed-video">
+                <span class="video-card-title">Multimedia analizada</span>
+                <div class="video-content-area aspect-16-9">
+                    <img src="" alt="Analizado" class="video-media" id="analyzed-media-img" style="display: none;">
+                    <video controls class="video-media" id="analyzed-media-video" style="display:none;"></video>
+                    <div class="placeholder-icon" id="analyzed-media-placeholder"><i class="fas fa-images"></i></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="theme-transition-overlay" id="themeTransitionOverlay"></div>
+
+    <footer class="site-footer">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="footer-logo-container" style="text-align: center;">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Vanguard Logo Light" class="logo-image logo-light footer-logo">
+                <img src="{{ url_for('static', filename='logo2.png') }}" alt="Vanguard Logo Dark" class="logo-image logo-dark footer-logo">
+            </div>
+            <p style="text-align: center;">© <span id="currentYear"></span> Vanguard <span class="text-gradient">IA</span>. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <div id="profile-modal-overlay" class="modal-overlay">
+        <div id="profile-modal" class="modal-content card">
+            <button id="close-profile-modal" class="modal-close-button">×</button>
+            <div class="modal-header">
+                <i class="fas fa-user-circle icon-gradient"></i>
+                <h2>Perfil de Usuario</h2>
+            </div>
+            <div id="profile-modal-loader" class="modal-loader">
+                <div class="new-anim-spinner"></div>
+            </div>
+            <div id="profile-modal-body" class="modal-body" style="display:none;">
+                <form id="profile-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="profile-nombre">Nombre(s)</label>
+                            <input type="text" id="profile-nombre" name="nombre_completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-apellidos">Apellido(s)</label>
+                            <input type="text" id="profile-apellidos" name="apellidos" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="profile-correo">Correo Electrónico</label>
+                            <input type="email" id="profile-correo" name="correo" disabled>
+                            <small>El correo no se puede modificar.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-celular">Número de Celular</label>
+                            <input type="tel" id="profile-celular" name="numero_celular">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-rol">Rol</label>
+                            <input type="text" id="profile-rol" name="rol" disabled>
+                        </div>
+                    </div>
+                    <div class="password-section">
+                        <h4>Cambiar Contraseña (Opcional)</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="profile-current-password">Contraseña Actual</label>
+                                <input type="password" id="profile-current-password" name="current_password">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-new-password">Nueva Contraseña</label>
+                                <input type="password" id="profile-new-password" name="new_password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="save-profile-button" class="cta-button primary-cta">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
